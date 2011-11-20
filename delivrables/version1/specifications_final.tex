@@ -69,12 +69,12 @@ Les patrons de conceptions décrits ici seront décrits plus en détails par la 
 \label{sec-3}
 \subsection{Cas d'utilisation}
 \label{sec-3-1}
+\includegraphics[width=0.9\textwidth]{Diagrammedecasdutilisation.png}
 
-   schéma
 \subsection{Diagramme de classes}
 \label{sec-3-2}
+\includegraphics[width=0.9\textwidth]{Diagrammedeclasses.png}
 
-   schéma
 \subsection{Patrons de conception utilisés}
 \label{sec-3-3}
 \subsubsection{Mememto}
@@ -82,16 +82,13 @@ Les patrons de conceptions décrits ici seront décrits plus en détails par la 
 Le patron de conception Memento est d'abord destiné à stocker l'état d'un composant, afin de pouvoir ensuite restaurer cet état. Il est très souvent utilisé lorsqu'on désire inclure une fonctionnalité \emph{``Undo''} dans un logiciel. Dans notre cas, une fois un coup joué, il n'est pas possible de revenir en arrière, cependant, la conservation de l'état du plateau et des pièces pemret d'écrire un historique de la partie, utile pour des joueurs stratèges qui désireraient étudier le déroulement de leur parties, pour y découvrir les raisons de leur défait ou victoire.
 \subsubsection{Factory}
 \label{sec-3-3-2}
-
-    Permet de centralisé la façon dont on crée les objets, notamment le plateau et les pièces
-\subsubsection{FlyWeight}
+Le patron de conception Factory permet de séparer l'implémentation concrète d'un composant de sa spécification: ainsi, il est possible de changer d'implémentation selon le besoin, par exemple, si un grand nombre de pièces est nécessaire, ou que l'on désire minimiser l'impact en mémoire du système, on pourra appeller une version implémentant le patron Flyweight pour notre usine de pièces.
+\subsubsection{Flyweight}
 \label{sec-3-3-3}
-
-    Permet d'économiser de la mémoire en représentant de l'information sans une instanciation automatique. On peut par exemple, représenter tous les pions en ne créant en réalité qu'un seul pion et en sauvegardant les différences entre les pions.
+Le patron Flyweight permet d'économiser de la mémoire en représentant de l'information sans une instanciation automatique. On peut par exemple, représenter tous les pions en ne créant en réalité qu'un seul pion et en sauvegardant les différences entre les pions.
 \subsubsection{Strategy}
 \label{sec-3-3-4}
-
-    Permet la modification à un seul endroit d'un comportement si ce comportement est utilisé par plusieurs pièces. Et, permet la réutilisation d'un comportement pour une nouvelle pièce.
+Ce patron permet la modification à un seul endroit d'un comportement si ce comportement est utilisé par plusieurs pièces ainsi que la réutilisation d'un comportement pour une nouvelle pièce.
 \subsubsection{MVC}
 \label{sec-3-3-5}
 
@@ -104,19 +101,13 @@ Le patron de conception Memento est d'abord destiné à stocker l'état d'un com
 Grâce à l'abstraction de la notion de pièce du jeu via la classe abstraite \emph{Piece}, et à l'utilisation des comportements à travers le patron Strategy, il est possible d'ajouter ou de modifier le comportement des pièces du jeu. Ainsi, il est envisageable de réutiliser ce moteur pour implémenter un moteur de jeu de Dames plutôt de que d'échecs, à l'aide d'une nouvelle classe dédiée de pion et d'une classe gérant son mouvement et sa promotion.
 \subsection{Changement de capacité de mouvement d'une pièce}
 \label{sec-4-2}
-
-   Grâce au pattern Strategy.
-   On a la possibilité d'ajouter de nouvelle pièces reprenant les capacités de mouvements d'une autre pièce sans avoir besoin de recopier du code.
-   Par exemple, si on souhaite ajouter la pièce `foo' au jeu avec les même capacité que la Dame dans ses mouvements alors on peux le faire. Si on souhaite modifier leurs comportements à tous les deux, on aura qu'à changer à un unique endroit. Et, on notera qu'on modifier le comportement d'une pièce à l'exécution.
+L'utilisation du patron Strategy permet de séparer la façon dont les pièces peuvent se déplacer sur le plateau. Ainsi, il est aussi possible d'ajouter des comportements aux pièces, et donc de créer de nouvelles pièces, en combinant de façon différente les comportements déjà existant, ou en créant de nouveaux comportements pour les pièces déjà existantes, ou combinaison de ces deux possibilités. Notons que ceci permet aussi de modifier le comportement des pièces dynamiquement.
 \subsection{Changement de capacité de promotion}
 \label{sec-4-3}
 De la même façon que le patron Strategy permet d'autoriser l'extension par ajout de comportement de mouvement d'une pièce, il permet ici d'autoriser l'extension par changement de la façon dont les pièces peuvent être promues (dans le cas du jeu d'échecs, de Pion à Dame ou Tour, par exemple).
 \subsection{Sauvegarde l'état d'une partie}
 \label{sec-4-4}
-
-   Grâce au pattern Memento.
-   Un champ de type State contenant l'état du jeu permet de revenir à un état antérieur du jeu.
-
+La possibilité de sauvegarder une partie en cours est laissée comme perspective future d'extension du système. Ceci est rendu possible par l'utilisation du patron Memento, qui stocke l'état du plateau régulièrement.
 \subsection{Extension non envisagées}
 \label{sec-4-5}
 Afin de permettre l'extension \emph{a posteriori} de notre système, de façons non imaginées par ses développeurs initiaux, le patron de conception Visitor (Visiteur) a été ajouté à la modélisation, pour qu'un contributeur externe n'ayant pas forcément accès à la source puisse ajouter ses fonctionnalités librement.
