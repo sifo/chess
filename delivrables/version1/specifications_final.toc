@@ -1,0 +1,22 @@
+\contentsline {section}{\numberline {1}Interpr\IeC {\'e}tation du sujet}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Compr\IeC {\'e}hension}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Probl\IeC {\`e}mes techniques}{2}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}Le protocole CECP}{2}{subsubsection.1.2.1}
+\contentsline {section}{\numberline {2}Concepts}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Probl\IeC {\`e}mes conceptuels}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Solutions}{3}{subsection.2.2}
+\contentsline {section}{\numberline {3}Description de l\IeC {\textquoteright }architecture}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Cas d'utilisation}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Diagramme de classes}{4}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Patrons de conception utilis\IeC {\'e}s}{4}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Mememto}{4}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Factory}{4}{subsubsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.3}FlyWeight}{4}{subsubsection.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.4}Strategy}{4}{subsubsection.3.3.4}
+\contentsline {subsubsection}{\numberline {3.3.5}MVC}{4}{subsubsection.3.3.5}
+\contentsline {section}{\numberline {4}Extensions envisag\IeC {\'e}es}{5}{section.4}
+\contentsline {subsection}{\numberline {4.1}Ajout de nouvelles pi\IeC {\`e}ces}{5}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Changement de capacit\IeC {\'e} de mouvement d'une pi\IeC {\`e}ce}{5}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Changement de capacit\IeC {\'e} de promotion}{5}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Sauvegarde l'\IeC {\'e}tat d'une partie}{5}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Extension non envisag\IeC {\'e}es}{5}{subsection.4.5}
