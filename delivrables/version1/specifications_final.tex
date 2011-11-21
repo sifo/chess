@@ -33,25 +33,24 @@
 \label{sec-1}
 \subsection{Compréhension}
 \label{sec-1-1}
+L'objectif est de concevoir un moteur de jeu d'échecs respectant fidèlement (note vers les règles de la FIDE) les règles de ce jeu, et capable d'acceuillir un certain nombre d'extensions futures.
 
-   L'objectif est de concevoir un moteur de jeu d'échecs respectant fidèlement (note vers les règles de la FIDE) les règles de ce jeu, et capable d'acceuillir un certain nombre d'extensions futures.
-
-   Ce moteur doit tout d'abord contenir les fonctionnalités de bases du jeu d'échecs : une représentation du plateau du jeu, la position courante sur le plateau, les coups légaux pour un joueur à partir d'une position donnée et l'obtention d'un gagnant à la fin de la partie.
+Ce moteur doit tout d'abord contenir les fonctionnalités de bases du jeu d'échecs : une représentation du plateau du jeu, la position courante sur le plateau, les coups légaux pour un joueur à partir d'une position donnée et l'obtention d'un gagnant à la fin de la partie.
    
-   Il convient ensuite de réfléchir sur le rôle même d'une extension. Une ex tension au jeu d'échecs correspondrait-elle à une altération du jeu en lui-même, par exemple en ayant un plateau plus grand, ce qui n'est pas permis dans les règles de ce jeu. Ou en restant dans le cadre même du jeu, en offrant par exemple la possibilité de jouer à la pendule.
+Il convient ensuite de réfléchir sur le rôle même d'une extension. Une ex tension au jeu d'échecs correspondrait-elle à une altération du jeu en lui-même, par exemple en ayant un plateau plus grand, ce qui n'est pas permis dans les règles de ce jeu. Ou en restant dans le cadre même du jeu, en offrant par exemple la possibilité de jouer à la pendule.
    
-   On choisira de considérer que toutes nouvelles fonctionnalités à la version de base, respectant les règles ou non, seront considérées comme des extensions, afin de laisser le plus de liberté à l'évolution du système dans le temps. 
+On choisira de considérer que toutes nouvelles fonctionnalités à la version de base, respectant les règles ou non, seront considérées comme des extensions, afin de laisser le plus de liberté à l'évolution du système dans le temps. 
 En effet, des extensions mettront à l'épreuve l'architecture initiale, donc plus la liberté d'évolution sera grande, plus les chances de pouvoir intégrer ses extensions, sans modification du code, sera grande.
 \subsection{Problèmes techniques}
 \label{sec-1-2}
 \subsubsection{Le protocole CECP}
 \label{sec-1-2-1}
+On comprend que le protocole CECP permet la communication entre le moteur de jeu et l'interface utilisateur. La diffulté est de comprendre où il intervient précisément dans moteur du jeu.
 
-    On comprend que le protocole CECP permet la communication entre le moteur de jeu et l'interface utilisateur. La diffulté est de comprendre où il intervient précisément dans moteur du jeu.
+Avec l'utilisation du modèle MVC, l'emplacement du protocole dans le système s'éclairci. Lorsque l'interface envoie une requête, elle l'envoie vers le contrôleur, qui notifie ensuite le modèle de cette requête. Ensuite, le modèle envoie les actions à effectuer à toutes les vues. 
 
-    Avec l'utilisation du modèle MVC, l'emplacement du protocole dans le système s'éclairci. Lorsque l'interface envoie une requête, elle l'envoie vers le contrôleur, qui notifie ensuite le modèle de cette requête. Ensuite, le modèle envoie les actions à effectuer à toutes les vues. 
-
-    Il convient donc de positionner le protocole entre le contrôleur et la vue, puis entre le modèle et les vues. Le protocole jouera donc le rôle de traducteur entre ces différents éléments.
+Il convient donc de positionner le protocole entre le contrôleur et la vue, puis entre le modèle et les vues. Le protocole jouera donc le rôle de traducteur entre ces différents éléments.
+\newpage
 \section{Concepts}
 \label{sec-2}
 \subsection{Problèmes conceptuels}
@@ -65,6 +64,7 @@ La plupart de ces questions trouvent une réponse avec l'utilisation de Design P
 En suivant ces réflexions, l'ensemble constitué du plateau et des pièces représentera le Modèle dans notre système, les Vues seront les clients tels que XBoard, et le rôle du Contrôleur est rempli par [INSERER ICI L'ENSEMBLE CORRESPONDANT].
 
 Les patrons de conceptions décrits ici seront décrits plus en détails par la suite.
+\newpage
 \section{Description de l’architecture}
 \label{sec-3}
 \subsection{Cas d'utilisation}
@@ -77,7 +77,7 @@ Les patrons de conceptions décrits ici seront décrits plus en détails par la 
 
 \subsection{Patrons de conception utilisés}
 \label{sec-3-3}
-\subsubsection{Mememto}
+\subsubsection{Memento}
 \label{sec-3-3-1}
 Le patron de conception Memento est d'abord destiné à stocker l'état d'un composant, afin de pouvoir ensuite restaurer cet état. Il est très souvent utilisé lorsqu'on désire inclure une fonctionnalité \emph{``Undo''} dans un logiciel. Dans notre cas, une fois un coup joué, il n'est pas possible de revenir en arrière, cependant, la conservation de l'état du plateau et des pièces pemret d'écrire un historique de la partie, utile pour des joueurs stratèges qui désireraient étudier le déroulement de leur parties, pour y découvrir les raisons de leur défait ou victoire.
 \subsubsection{Factory}
@@ -91,9 +91,12 @@ Le patron Flyweight permet d'économiser de la mémoire en représentant de l'in
 Ce patron permet la modification à un seul endroit d'un comportement si ce comportement est utilisé par plusieurs pièces ainsi que la réutilisation d'un comportement pour une nouvelle pièce.
 \subsubsection{MVC}
 \label{sec-3-3-5}
-
-    Organise le système en trois partie : le modèle, la vue et le contrôleur.
-    Donne un rôle précis à ces 3 éléments.
+C'est un patron d'architecture et une méthode de conception qui organise l'Interface Homme Machine. Il se divise en trois parties: les Vues, le Modèle et le Contrôleur.
+\paragraph{Vues} : Il n'est pas demandé de développer une interface graphique pour jouer aux échecs. Cependant, il est nécessaire d'implémenter un sous-ensemble du protocole CECB, afin d'utiliser par la suite une interface externe implémentant ce protocole.
+En général, les vues sont les interfaces avec lesquelles l'utilisateur interagit.
+\paragraph{Modèle} : Il représente dans l'architecture MVC le comportement de l'application. En effet, il prend en charge la manipulation et la gestion des données. Dans notre cas il assure la création de la table, l'initialisation du jeu, et tous les changements effectués sur les pièces et le jeu en général (BoardManager). Il assure aussi le déroulement des parties sur le réseau (NetworkManager), et tout ce qui concerne la gestion de joueurs (PlayerManager). Notons que tout ce qui se déroule au niveau du modèle est transféré aux vues en passant par le protocole CECP.
+\paragraph{Contrôleur} : Il a comme tâche de transmettre les modifications et d'assurer la synchronisation. Il prend en charge la réception des actions effectuées coté vues par l'utilisateur (où la transmission est assurée par le protocole CECP) et la notification au modèle de ces actions.
+\newpage
 \section{Extensions envisagées}
 \label{sec-4}
 \subsection{Ajout de nouvelles pièces}
