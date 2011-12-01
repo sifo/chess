@@ -1,5 +1,5 @@
 package chess.entity
 
-class Bishop {
+class Bishop extends Piece {
 
 }
