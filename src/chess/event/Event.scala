@@ -1,5 +1,5 @@
 package chess.event
 
-class Event {
+trait Event {
 
 }

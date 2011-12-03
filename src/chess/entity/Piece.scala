@@ -1,5 +1,5 @@
 package chess.entity;
 
-class Piece {
+trait Piece {
   
 }

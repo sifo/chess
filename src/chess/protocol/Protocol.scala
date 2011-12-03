@@ -1,12 +1,8 @@
 package chess.protocol;
 import chess.event.Event
 
-object Protocol {
-	def translateIn (s : String) : Event = {
-	  new Event;
-	}
+trait Protocol {
+	def translateIn (s : String) : Event
 	
-	def translateOut (e : Event) : String = {
-	  new String;
-	}
+	def translateOut (e : Event) : String
 }
