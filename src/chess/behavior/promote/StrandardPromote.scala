@@ -1,5 +1,5 @@
-package chess.behavior.promote;
+package chess.behavior.promote
 
-class StandardPromote extends PromoteBehavior {
+class StandardPromote {
 	
 }

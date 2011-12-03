@@ -1,5 +1,5 @@
-package chess.behavior.promote;
+package chess.behavior.promote
 
 trait PromoteBehavior {
-	
+	def promote
 }
