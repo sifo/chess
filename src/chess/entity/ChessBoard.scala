@@ -25,12 +25,14 @@ object Board {
 }
 
 class ChessBoard(dimension: Int) extends Board {
-  var squares = Array.ofDim[Int](dimension, dimension);
-  var pieces = Array.ofDim[Piece](dimension, dimension);
+  var squares = Array.ofDim[Piece](dimension, dimension);
   var winner: Int = 0;
 
   override def move(xSrc: Int, ySrc: Int, xDst: Int, yDst: Int) = {
-    true;
+	  if(! squares(xSrc)(ySrc).isInstanceOf[Piece] ) {
+		  false;
+	  }
+	  else squares(xSrc)(ySrc).performMove(xDst, yDst);
   }
 
   override def doWeHaveAWinner() = {
