@@ -5,16 +5,23 @@ import chess.behavior.move.MoveBehavior
 abstract class Piece {
 	private var moveBehavior: MoveBehavior = null
 	private var promoteBehavior: PromoteBehavior = null
+	private var position: Position = new Position(-1, -1)
 
-	def performMove = moveBehavior.move
+	def canMove(init: Position): Boolean = {
+		moveBehavior.canMove(init, getPosition)
+	}
 
-	def performPromote = promoteBehavior.promote
+	def canPromote = promoteBehavior.canPromote
 
 	def getMoveBehavior = moveBehavior
 
 	def getPromoteBehavior = promoteBehavior
+	
+	def getPosition = position
 
 	def setMoveBehavior(mb: MoveBehavior) = moveBehavior = mb
 
 	def setPromoteBehavior(pb: PromoteBehavior) = promoteBehavior = pb
+	
+	def setPosition(pos: Position) = position = pos
 }

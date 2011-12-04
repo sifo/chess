@@ -1,5 +1,7 @@
 package chess.behavior.promote
 
 trait PromoteBehavior {
-	def promote
+	def canPromote(): Boolean = {
+		false
+	}
 }

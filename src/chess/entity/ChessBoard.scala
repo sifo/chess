@@ -32,7 +32,9 @@ class ChessBoard(dimension: Int) extends Board {
 	  if(! squares(xSrc)(ySrc).isInstanceOf[Piece] ) {
 		  false;
 	  }
-	  else squares(xSrc)(ySrc).performMove(xDst, yDst);
+	  else {
+	  	squares(xSrc)(ySrc).canMove(new Position(xDst, yDst));
+	  }
   }
 
   override def doWeHaveAWinner() = {
