@@ -1,5 +1,5 @@
 package chess.behavior.move;
 
-class NoWayMove extends MoveBehavior {
+trait NoWayMove extends MoveBehavior {
 	
 }

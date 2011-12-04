@@ -1,5 +1,5 @@
 package chess.behavior.move;
 
-class CastlingMove extends MoveBehavior {
+trait CastlingMove extends MoveBehavior {
 	
 }

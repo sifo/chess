@@ -1,5 +1,5 @@
 package chess.behavior.promote
 
-class StandardPromote {
+trait StandardPromote extends PromoteBehavior {
 	
 }

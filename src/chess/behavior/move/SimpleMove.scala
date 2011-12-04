@@ -1,6 +1,6 @@
 package chess.behavior.move;
 
-class SimpleMove extends MoveBehavior {
+trait SimpleMove extends MoveBehavior {
 	
 	override def move(): Unit = {
 		

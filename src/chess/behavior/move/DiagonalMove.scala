@@ -1,5 +1,5 @@
 package chess.behavior.move;
 
-class DiagonalMove extends MoveBehavior {
+trait DiagonalMove extends MoveBehavior {
   
 }

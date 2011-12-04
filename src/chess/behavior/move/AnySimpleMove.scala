@@ -1,6 +1,6 @@
 package chess.behavior.move
 
-class AnySimpleMove extends MoveBehavior {
+trait AnySimpleMove extends MoveBehavior {
 
 	def move() {
 		
