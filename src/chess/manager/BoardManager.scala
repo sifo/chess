@@ -9,7 +9,7 @@ class BoardManager {
 	def move(pos :Position, piece: Piece){
 		if(piece.canMove(pos)) {
 			// change piece position
-			piece.setPosition(new Position(pos.getX, pos.getY))
+			piece.setPosition(new Position(pos.x, pos.y))
 			
 			// remove piece on new Position, if any
 			// board.removePieceAt(Position)
