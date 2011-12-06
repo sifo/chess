@@ -3,7 +3,7 @@ import chess.entity.Position
 
 trait LMove extends MoveBehavior {
 	
-	def possibleMoves(x: Int, y: Int, dimension: Int): Array[Array[Int]] = {
+	abstract override def possibleMoves(init : Position, dimension: Int): Array[Array[Int]] = {
 		var output = Array.fill[Int](dimension, dimension)(1);
 
 		/*
@@ -11,14 +11,14 @@ trait LMove extends MoveBehavior {
      * Is the piece would move out of the board, the exception is caught to do nothing
      */
 		try {
-			output(x + 1)(y + 2) = 1;
-			output(x + 1)(y - 2) = 1;
-			output(x - 1)(y + 2) = 1;
-			output(x - 1)(y - 2) = 1;
-			output(x + 2)(y + 1) = 1;
-			output(x - 2)(y + 1) = 1;
-			output(x + 2)(y - 1) = 1;
-			output(x - 2)(y - 1) = 1;
+			output(init.x + 1)(init.y + 2) = 1;
+			output(init.x + 1)(init.y - 2) = 1;
+			output(init.x - 1)(init.y + 2) = 1;
+			output(init.x - 1)(init.y - 2) = 1;
+			output(init.x + 2)(init.y + 1) = 1;
+			output(init.x - 2)(init.y + 1) = 1;
+			output(init.x + 2)(init.y - 1) = 1;
+			output(init.x - 2)(init.y - 1) = 1;
 		} catch {
 			case ex: ArrayIndexOutOfBoundsException =>
 		}
@@ -26,7 +26,7 @@ trait LMove extends MoveBehavior {
 		output;
 	}
 
-	abstract override def canMove(pos: Position, dest: Position): Boolean = {
-		false
+	abstract override def canMove(pos: Position, dest: Position, dimension : Int): Boolean = {
+		possibleMoves(pos, dimension)(dest.x)(dest.y) == 1;
 	}
 }

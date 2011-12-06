@@ -4,7 +4,7 @@ import chess.entity.Position
 
 trait AnySimpleMove extends MoveBehavior {
 
-	abstract override def canMove(pos: Position, dest: Position): Boolean = {
+	abstract override def canMove(pos: Position, dest: Position, dimension: Int): Boolean = {
 		false
 	}
 }
