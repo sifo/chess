@@ -11,14 +11,14 @@ trait DiagonalMove extends MoveBehavior {
      * Is the piece would move out of the board, the exception is 
      * caught to do nothing
      */
-    try {
+    if (init.x + 1 < dimension && init.y + 1 < dimension)
       output(init.x + 1)(init.y + 1) = 1;
+    if (init.x + 1 < dimension && init.y - 1 >= 0)
       output(init.x + 1)(init.y - 1) = 1;
+    if (init.x - 1 >= 0 && init.y + 1 < dimension)
       output(init.x - 1)(init.y + 1) = 1;
+    if (init.x - 1 >= 0 && init.y - 1 >= 0)
       output(init.x - 1)(init.y - 1) = 1;
-    } catch {
-      case ex: ArrayIndexOutOfBoundsException =>
-    }
 
     output;
   }
