@@ -4,7 +4,7 @@ import chess.entity.Position
 trait LMove extends MoveBehavior {
 
   abstract override def possibleMoves(init: Position, dimension: Int): Array[Array[Int]] = {
-    var output = Array.fill[Int](dimension, dimension)(1);
+    var output = Array.fill[Int](dimension, dimension)(0);
 
     /*
      * Fills the array with 1 where the LMove can be performed.
