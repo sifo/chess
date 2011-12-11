@@ -1,36 +1,45 @@
 package chess.behavior.move;
 import chess.entity.Position
+import chess.history.Action
 
 trait LMove extends MoveBehavior {
 
-  abstract override def possibleMoves(init: Position, dimension: Int): Array[Array[Int]] = {
-    var output = Array.fill[Int](dimension, dimension)(0);
+  abstract override def possibleMoves(a: Action): Array[Array[Int]] = {
+    var output = Array.fill[Int](a.dim.getHeight().toInt, a.dim.getWidth().toInt)(0);
 
     /*
      * Fills the array with 1 where the LMove can be performed.
      * Is the piece would move out of the board, the exception is caught to do nothing
      */
-    if (init.x + 1 < dimension && init.y + 2 < dimension)
-      output(init.x + 1)(init.y + 2) = 1;
-    if (init.x + 1 < dimension && init.y - 2 >= 0)
-      output(init.x + 1)(init.y - 2) = 1;
-    if (init.x - 1 >= 0 && init.y + 2 < dimension)
-      output(init.x - 1)(init.y + 2) = 1;
-    if (init.x - 1 >= 0 && init.y - 2 >= 0)
-      output(init.x - 1)(init.y - 2) = 1;
-    if (init.x + 2 < dimension && init.y + 1 < dimension)
-      output(init.x + 2)(init.y + 1) = 1;
-    if (init.x - 2 >= 0 && init.y + 1 < dimension)
-      output(init.x - 2)(init.y + 1) = 1;
-    if (init.x + 2 < dimension && init.y - 1 >= 0)
-      output(init.x + 2)(init.y - 1) = 1;
-    if (init.x - 2 >= 0 && init.y - 1 >= 0)
-      output(init.x - 2)(init.y - 1) = 1;
+    if (a.src.x + 1 < a.dim.getHeight().toInt
+      && a.src.y + 2 < a.dim.getWidth().toInt)
+      output(a.src.x + 1)(a.src.y + 2) = 1;
+    if (a.src.x + 1 < a.dim.getHeight().toInt
+      && a.src.y - 2 >= 0)
+      output(a.src.x + 1)(a.src.y - 2) = 1;
+    if (a.src.x - 1 >= 0
+      && a.src.y + 2 < a.dim.getWidth().toInt)
+      output(a.src.x - 1)(a.src.y + 2) = 1;
+    if (a.src.x - 1 >= 0
+      && a.src.y - 2 >= 0)
+      output(a.src.x - 1)(a.src.y - 2) = 1;
+    if (a.src.x + 2 < a.dim.getHeight().toInt
+      && a.src.y + 1 < a.dim.getWidth().toInt)
+      output(a.src.x + 2)(a.src.y + 1) = 1;
+    if (a.src.x - 2 >= 0
+      && a.src.y + 1 < a.dim.getWidth().toInt)
+      output(a.src.x - 2)(a.src.y + 1) = 1;
+    if (a.src.x + 2 < a.dim.getHeight().toInt
+      && a.src.y - 1 >= 0)
+      output(a.src.x + 2)(a.src.y - 1) = 1;
+    if (a.src.x - 2 >= 0
+      && a.src.y - 1 >= 0)
+      output(a.src.x - 2)(a.src.y - 1) = 1;
 
     output;
   }
 
-  abstract override def canMove(pos: Position, dest: Position, dimension: Int): Boolean = {
-    possibleMoves(pos, dimension)(dest.x)(dest.y) == 1;
+  abstract override def canMove(a: Action): Boolean = {
+    possibleMoves(a)(a.dst.x)(a.dst.y) == 1;
   }
 }
