@@ -7,11 +7,8 @@ trait MoveBehavior {
    * Returns whether the piece can move to the given position from its
    * initial position.
    */
-  //Dimension permet de passer la dimension du plateau, inconnue autrement
-  //puisqu'on utilise un trait.
-  def canMove(action: Action): Boolean = {
-    false
-  }
+  //méthode abstraite, ce trait ne devrait jamais être utilisé directement
+  def canMove(action: Action): Boolean;
 
   /**
    * Returns an array containing 0s everywhere, and 1s where the piece can
