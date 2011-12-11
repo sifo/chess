@@ -2,11 +2,13 @@ package chess.entity
 import chess.behavior.move.CastlingMove
 import chess.behavior.move.AnySimpleMove
 import chess.behavior.promote.NoWayPromote
+import chess.behavior.move.MoveBehavior
+import chess.behavior.promote.PromoteBehavior
 
 class King extends Piece {
 	var moveBehavior = new AnySimpleMove with CastlingMove {} 
 	var promoteBehavior = new NoWayPromote {}
-	var position
+	var position : Position
 	var boardDimension
 	var color
 	
