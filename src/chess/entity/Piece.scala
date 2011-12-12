@@ -4,7 +4,6 @@ import chess.behavior.promote.PromoteBehavior
 import chess.behavior.move.MoveBehavior
 import java.awt.Dimension
 import chess.history.Action
-import chess.entity.Color
 
 
 abstract class Piece {
