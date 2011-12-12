@@ -1,7 +1,7 @@
 package chess.history
 
 class ChessHistory extends History {
-  var listeActions = List[Action]()
+  private var listeActions = List[Action]()
   
   def addAction(action: Action) {
     listeActions = action :: listeActions
