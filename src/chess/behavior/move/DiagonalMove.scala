@@ -1,34 +1,34 @@
 package chess.behavior.move;
 import chess.entity.Position
 import chess.history.Action
+import chess.entity.MovementInfo
 
 trait DiagonalMove extends MoveBehavior {
 
-  abstract override def possibleMoves(a: Action): Array[Array[Int]] = {
-    var output = Array.fill[Int](a.dim.getHeight().toInt, a.dim.getWidth().toInt)(0);
+  abstract override def possibleMoves(mvtInfo: MovementInfo): Array[Array[Int]] = {
+    var output = Array.fill[Int](mvtInfo.boardDim.getHeight().toInt, mvtInfo.boardDim.getWidth().toInt)(0);
 
     /*
      * Fills the array with 1 where the DiagonalMove can be performed.
      * Is the piece would move out of the board, the exception is 
      * caught to do nothing
      */
-    if (a.src.x + 1 < a.dim.getHeight().toInt
-      && a.src.y + 1 < a.dim.getWidth().toInt)
-      output(a.src.x + 1)(a.src.y + 1) = 1;
-    if (a.src.x + 1 < a.dim.getHeight().toInt
-      && a.src.y - 1 >= 0)
-      output(a.src.x + 1)(a.src.y - 1) = 1;
-    if (a.src.x - 1 >= 0
-      && a.src.y + 1 < a.dim.getWidth().toInt)
-      output(a.src.x - 1)(a.src.y + 1) = 1;
-    if (a.src.x - 1 >= 0
-      && a.src.y - 1 >= 0)
-      output(a.src.x - 1)(a.src.y - 1) = 1;
+    if (mvtInfo.src.x + 1 < mvtInfo.boardDim.getHeight().toInt
+      && mvtInfo.src.y + 1 < mvtInfo.boardDim.getWidth().toInt)
+      output(mvtInfo.src.x + 1)(mvtInfo.src.y + 1) = 1;
+    if (mvtInfo.src.x + 1 < mvtInfo.boardDim.getHeight().toInt
+      && mvtInfo.src.y - 1 >= 0)
+      output(mvtInfo.src.x + 1)(mvtInfo.src.y - 1) = 1;
+    if (mvtInfo.src.x - 1 >= 0
+      && mvtInfo.src.y + 1 < mvtInfo.boardDim.getWidth().toInt)
+      output(mvtInfo.src.x - 1)(mvtInfo.src.y + 1) = 1;
+    if (mvtInfo.src.x - 1 >= 0
+      && mvtInfo.src.y - 1 >= 0)
+      output(mvtInfo.src.x - 1)(mvtInfo.src.y - 1) = 1;
 
     output;
   }
-
-  abstract override def canMove(a: Action): Boolean = {
-    possibleMoves(a)(a.dst.x)(a.dst.y) == 1;
-  }
+	abstract override def canMove(mvtInfo: MovementInfo): Boolean = {
+		possibleMoves(mvtInfo)(mvtInfo.dst.x)(mvtInfo.dst.y) == 1;
+	}
 }

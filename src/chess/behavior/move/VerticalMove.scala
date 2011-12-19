@@ -1,9 +1,10 @@
 package chess.behavior.move;
 import chess.entity.Position
+import chess.entity.MovementInfo
 
 trait VerticalMove extends MoveBehavior {
 	
-	abstract override def canMove(pos: Position, dest: Position, dimension : Int): Boolean = {
-		super.canMove(pos, dest, dimension)
+	abstract override def canMove(movementInfo : MovementInfo): Boolean = {
+		super.canMove(movementInfo)
 	}
 }
