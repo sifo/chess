@@ -6,6 +6,6 @@ import chess.behavior.promote.NoWayPromote
 
 
 class King extends Piece {
-	var moveBehavior = new AnySimpleMove with CastlingMove {} 
-	var promoteBehavior = new NoWayPromote {}
+	override var moveBehavior = new AnySimpleMove with CastlingMove {} 
+	override var promoteBehavior = new NoWayPromote {}
 }

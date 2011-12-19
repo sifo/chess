@@ -78,5 +78,8 @@ class ChessBoard(dimension: Int) extends Board {
   override def doWeHaveAWinner() = {
     winner;
   }
-
+  
+  def isOnBoard(pos : Position) : Boolean = {
+  	false
+  }
 }

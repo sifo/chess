@@ -3,6 +3,6 @@ import chess.behavior.promote.NoWayPromote
 import chess.behavior.move.AnySimpleMove
 
 class Queen extends Piece {
-	var moveBehavior = new AnySimpleMove {} 
-	var promoteBehavior = new NoWayPromote {}
+	override var moveBehavior = new AnySimpleMove {} 
+	override var promoteBehavior = new NoWayPromote {}
 }

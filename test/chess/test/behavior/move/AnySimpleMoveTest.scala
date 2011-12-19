@@ -1,5 +1,6 @@
 package chess.test.behavior.move
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertFalse
 import org.junit.Test
 import chess.behavior.move.AnySimpleMove
 import chess.entity.Position
@@ -11,6 +12,9 @@ class AnySimpleMoveTest {
 		val movement = new AnySimpleMove {}
 		val initPost = new Position(3, 3)
 		val destPost = new Position(4, 3)
-		assertTrue(movement.canMove(initPost, destPost));
+		assertTrue(movement.canMove(initPost, new Position(4, 3)));
+		assertTrue(movement.canMove(initPost, new Position(4, 4)));
+		assertTrue(movement.canMove(initPost, new Position(2, 2)));
+		assertFalse(movement.canMove(initPost, new Position(3, 3)));
 	}
 }

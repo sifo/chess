@@ -5,6 +5,6 @@ import chess.behavior.promote.NoWayPromote
 import chess.behavior.move.MoveBehavior
 
 class Rook {
-	val moveBehavior = new HorizontalMove with VerticalMove {}
-	var promoteBehavior = new NoWayPromote {}
+	override val moveBehavior = new HorizontalMove with VerticalMove {}
+	override var promoteBehavior = new NoWayPromote {}
 }
