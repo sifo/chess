@@ -4,32 +4,34 @@ import chess.behavior.promote.PromoteBehavior
 import chess.behavior.move.MoveBehavior
 import java.awt.Dimension
 import chess.history.Action
-
+import chess.entity.Color._
 
 abstract class Piece {
 	private var moveBehavior   : MoveBehavior    = null
 	private var promoteBehavior: PromoteBehavior = null
 	private var position: Position = new Position(-1, -1)
 	private var boardDimension : Dimension = null
-	private var color: Color = new Color()
-	private var action: Action = null
+	private var color : Color = null
+	private var mvtInfo: MovementInfo = null
 	
 	//Ajout pour pouvoir transmettre la dimension
 	//aux canMove(). Nécessaire, sinon, risques de sortir du plateau.
 	//À ajouter au constructeur
 
-	def canMove(dest: Position): Boolean = {
-	  moveBehavior.canMove(getAction)
+	def canMove(movementInfo: MovementInfo): Boolean = {
+		moveBehavior.canMove(movementInfo)
 	}
-
-	def canPromote = promoteBehavior.canPromote(getAction)
+	
+	def canPromote(movementInfo: MovementInfo): Boolean = {
+	  promoteBehavior.canPromote(movementInfo)
+	}
 	
 	def getMoveBehavior = moveBehavior
 	def getPromoteBehavior = promoteBehavior
 	def getBoardDimension = boardDimension
 	def getPosition = position
 	def getColor = color
-	def getAction = action
+	def getAction = mvtInfo
 	
 
 	def setMoveBehavior(mb: MoveBehavior) = moveBehavior = mb
@@ -37,10 +39,10 @@ abstract class Piece {
 	def setPosition(pos: Position) = position = pos
 	def setBoardDimension(dim : Dimension) = boardDimension = dim
 	def setColor(c : Color) = color = c
-	def setAction(dest: Position) {
-	  action.src   = getPosition
-	  action.dst   = dest
-	  action.piece = this
-	  action.dim   = getBoardDimension
+	def setMvtInfo(dest: Position) {
+	  mvtInfo.src   = getPosition
+	  mvtInfo.dst   = dest
+	  mvtInfo.piece = this
+	  mvtInfo.boardDim = getBoardDimension
 	}
 }

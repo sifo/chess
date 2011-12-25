@@ -1,8 +1,8 @@
 package chess.behavior.promote
-import chess.history.Action
+import chess.entity.MovementInfo
 
 trait PromoteBehavior {
-	def canPromote(action: Action): Boolean = {
+	def canPromote(movementInfo : MovementInfo): Boolean = {
 		false
 	}
 }

@@ -1,9 +1,9 @@
 package chess.behavior.promote
-import chess.history.Action
+import chess.entity.MovementInfo
 
 trait NoWayPromote extends PromoteBehavior {
 	
-	override def canPromote(action: Action): Boolean = {
+	abstract override def canPromote(movementInfo : MovementInfo): Boolean = {
 		false
 	}
 }
