@@ -1,4 +1,5 @@
 package chess.entity;
+import java.awt.Dimension
 
 //Contents: Board interface
 //			ChessBoard implementing Board interface
@@ -67,7 +68,9 @@ class ChessBoard(dimension: Int) extends Board {
     if (!squares(src.x)(src.y).isInstanceOf[Piece]) {
       false;
     } else {
-      squares(src.x)(src.y).canMove(dst);
+    	val p = squares(src.x)(src.y)
+    	val m = new MovementInfo(p.getPosition, dst, p, new Dimension(dimension, dimension), null)
+    	p.canMove(m);
     }
   }
 
