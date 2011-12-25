@@ -5,7 +5,7 @@ import chess.entity.MovementInfo
 
 trait StandardPromote extends PromoteBehavior {
   
-	abstract override def canPromote(movementInfo : MovementInfo): Boolean = {
+	override def canPromote(movementInfo : MovementInfo): Boolean = {
 	  movementInfo.piece.isInstanceOf[Pawn]
 	}	
 }
