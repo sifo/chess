@@ -1,8 +1,10 @@
 package chess.entity
 import chess.behavior.move.SimpleMove
 import chess.behavior.promote.StandardPromote
+import chess.behavior.promote.PromoteBehavior
+import chess.behavior.move.MoveBehavior
 
 class Pawn extends Piece {
-	override val moveBehavior = new SimpleMove {}
-	override var promoteBehavior = new StandardPromote {}
+	moveBehavior = new MoveBehavior with SimpleMove
+	promoteBehavior = new PromoteBehavior with StandardPromote
 }

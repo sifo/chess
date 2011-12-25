@@ -7,12 +7,12 @@ import chess.history.Action
 import chess.entity.Color._
 
 abstract class Piece {
-	private var moveBehavior   : MoveBehavior    = null
-	private var promoteBehavior: PromoteBehavior = null
-	private var position: Position = new Position(-1, -1)
-	private var boardDimension : Dimension = null
-	private var color : Color = null
-	private var mvtInfo: MovementInfo = null
+	var moveBehavior   : MoveBehavior    = null
+	var promoteBehavior: PromoteBehavior = null
+	var position: Position = new Position(-1, -1)
+	var boardDimension : Dimension = null
+	var color : Color = null
+	var mvtInfo: MovementInfo = null
 	
 	//Ajout pour pouvoir transmettre la dimension
 	//aux canMove(). Nécessaire, sinon, risques de sortir du plateau.

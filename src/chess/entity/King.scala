@@ -3,9 +3,11 @@ package chess.entity
 import chess.behavior.move.CastlingMove
 import chess.behavior.move.AnySimpleMove
 import chess.behavior.promote.NoWayPromote
+import chess.behavior.move.MoveBehavior
+import chess.behavior.promote.PromoteBehavior
 
 
 class King extends Piece {
-	override var moveBehavior = new AnySimpleMove with CastlingMove {} 
-	override var promoteBehavior = new NoWayPromote {}
+	moveBehavior = new MoveBehavior with AnySimpleMove with CastlingMove
+	promoteBehavior = new PromoteBehavior with NoWayPromote
 }

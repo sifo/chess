@@ -1,7 +1,8 @@
 package chess.entity
 import chess.behavior.move.DiagonalMove
+import chess.behavior.move.MoveBehavior
 
 class Bishop extends Piece {
-	override var moveBehavior = new DiagonalMove {}
-	override var promoteBehavior = null
+	moveBehavior = new MoveBehavior with DiagonalMove
+	promoteBehavior = null
 }
