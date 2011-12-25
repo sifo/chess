@@ -7,7 +7,7 @@ class BoardManager {
 	var board = new ChessBoard(8)
 	
 	def move(pos :Position, piece: Piece){
-		if(piece.canMove(pos)) {
+		if(piece.canMove(null)) {
 			// change piece position
 			piece.setPosition(new Position(pos.x, pos.y))
 			
