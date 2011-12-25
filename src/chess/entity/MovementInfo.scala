@@ -1,5 +1,4 @@
 package chess.entity
-import java.awt.Dimension
 import chess.history.History
 
 class MovementInfo(
