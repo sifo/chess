@@ -1,20 +1,66 @@
 package chess.test.behavior.move
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
-import org.junit.Test
 import chess.behavior.move.AnySimpleMove
 import chess.entity.Position
+import chess.entity.MovementInfo
+import chess.entity.Dimension
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
+import org.junit.runner.RunWith
+import org.scalatest.Spec
+import org.scalatest.BeforeAndAfter
+import chess.behavior.move.MoveBehavior
 
-class AnySimpleMoveTest {
+@RunWith(classOf[JUnitRunner])
+class AnySimpleMoveTest extends Spec with BeforeAndAfter {
 	
-	@Test 
-	def move() {
-		val movement = new AnySimpleMove {}
-		val initPost = new Position(3, 3)
-		val destPost = new Position(4, 3)
-		assertTrue(movement.canMove(initPost, new Position(4, 3)));
-		assertTrue(movement.canMove(initPost, new Position(4, 4)));
-		assertTrue(movement.canMove(initPost, new Position(2, 2)));
-		assertFalse(movement.canMove(initPost, new Position(3, 3)));
+	var movement: MoveBehavior = _
+	var dim: Dimension = _
+	var src: Position = _
+	var dst: Position = _
+	var mvtInfo: MovementInfo = _
+	
+	before {
+		movement = new MoveBehavior with AnySimpleMove
+		dim = new Dimension(8, 8)
+		src = new Position(3, 3)
+	}
+	
+	describe("AnySimpleMove") {
+		
+		it("should reject move on the same position") {
+			dst = new Position(3, 3)
+			mvtInfo = new MovementInfo(src, dst, null, dim, null)
+			assert(!movement.canMove(mvtInfo))
+		}
+		
+		it("should reject move on a square more than one square away") {
+			dst = new Position(5, 5)
+			mvtInfo = new MovementInfo(src, dst, null, dim, null)
+			assert(!movement.canMove(mvtInfo))
+		}
+		
+		it("should reject move on a square out of bounds") {
+			dst = new Position(10, 10)
+			mvtInfo = new MovementInfo(src, dst, null, dim, null)
+			assert(!movement.canMove(mvtInfo));
+		}
+		
+		it("should accept move to the square on the right") {
+			dst = new Position(4, 3)
+			mvtInfo = new MovementInfo(src, dst, null, dim, null)
+			assert(movement.canMove(mvtInfo))
+		}
+		
+		it("should accept move to the square on the upper right") {
+			dst = new Position(4, 4)
+			mvtInfo = new MovementInfo(src, dst, null, dim, null)
+			assert(movement.canMove(mvtInfo))
+		}
+		
+		it("should accept move to the square on the lower left") {
+			dst = new Position(2, 2)
+			mvtInfo = new MovementInfo(src, dst, null, dim, null)
+			assert(movement.canMove(mvtInfo))
+		}
 	}
 }
