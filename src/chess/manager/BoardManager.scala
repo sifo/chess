@@ -2,8 +2,9 @@ package chess.manager;
 import chess.entity.ChessBoard
 import chess.entity.Piece
 import chess.entity.Position
+import chess.ChessModel
 
-class BoardManager {
+class BoardManager(val chessModel : ChessModel) {
 	var board = new ChessBoard(8)
 	
 	def move(pos :Position, piece: Piece){

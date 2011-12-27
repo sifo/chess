@@ -1,5 +1,6 @@
 package chess.manager;
+import chess.ChessModel
 
-class PlayerManager {
+class PlayerManager(val chessModel: ChessModel) {
 	
 }
