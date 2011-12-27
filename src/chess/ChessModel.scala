@@ -26,8 +26,13 @@ class ChessModel extends Game {
 	}
 	
 	def fireBoard() : Unit = {
+		
 	}
-
+	
+	def fireChangeCurrentPlayer() : Unit = {
+		
+	}
+	
 	def start() {
 		//fireConfigDialog()
 	}
