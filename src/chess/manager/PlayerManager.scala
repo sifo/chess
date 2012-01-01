@@ -1,4 +1,4 @@
-package chess.manager;
+package chess.manager
 import chess.ChessModel
 import scala.collection.mutable.ListBuffer
 import chess.entity.Player
