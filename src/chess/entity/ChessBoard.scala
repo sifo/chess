@@ -1,5 +1,4 @@
 package chess.entity;
-import java.awt.Dimension
 
 //Contents: Board interface
 //			ChessBoard implementing Board interface
@@ -42,12 +41,12 @@ abstract class Board {
 object Board {
 
   def apply() = {
-    new ChessBoard(8);
+    new ChessBoard(new Dimension(8, 8))
   }
 }
 
-class ChessBoard(dimension: Int) extends Board {
-  var squares = Array.ofDim[Piece](dimension, dimension);
+class ChessBoard(dimension: Dimension) extends Board {
+  var squares = Array.ofDim[Piece](dimension.width, dimension.height);
   var winner: Int = 0;
 
   override def add(p: Piece, pos: Position): Boolean = {
@@ -69,7 +68,7 @@ class ChessBoard(dimension: Int) extends Board {
       false;
     } else {
     	val p = squares(src.x)(src.y)
-    	val m = new MovementInfo(p.getPosition, dst, p, new Dimension(dimension, dimension), null)
+    	val m = new MovementInfo(p.getPosition, dst, p, dimension, null)
     	p.canMove(m);
     }
   }
