@@ -1,20 +1,76 @@
 package chess.manager
+import scala.xml.XML
 import chess.entity.ChessBoard
+import chess.entity.Dimension
+import chess.entity.MovementInfo
 import chess.entity.Piece
 import chess.entity.Position
-import chess.ChessModel
-import chess.entity.MovementInfo
-import chess.history.ChessHistory
-import chess.entity.Dimension
 import chess.history.Action
+import chess.history.ChessHistory
+import chess.ChessModel
+import chess.entity.Rook
+import chess.entity.Knight
+import chess.entity.King
+import chess.entity.Bishop
+import chess.entity.Queen
+import chess.entity.Pawn
+import chess.entity.Color._
 
-class BoardManager(val chessModel : ChessModel) {
-	var board = new ChessBoard(8)
-	var history = new ChessHistory
-	
-	def move(pos :Position, piece: Piece){
+class BoardManager(val chessModel: ChessModel) {
+	var board: ChessBoard = _
+	var history: ChessHistory = _
+	loadConfig("res/standard-chess-config.xml")
+
+	def loadConfig(configFile : String) {
+		history = new ChessHistory
+		val config = XML.loadFile(configFile)
+		val is3DBoard = (config \\ "three-dimensional-board" \ "@enabled").text.toBoolean
+		val isHorizontalConnected = (config \\ "horizontal-connected-board" \ "@enabled").text.toBoolean
+		val isVerticalConnected = (config \\ "vertical-connected-board" \ "@enabled").text.toBoolean
+		val width = (config \\ "board-dimension" \ "@width").text.toInt
+		val length = (config \\ "board-dimension" \ "@length").text.toInt
+		var dim: Dimension = null
+		if (is3DBoard) {
+			val height = (config \\ "board-dimension" \ "@height").text.toInt
+			//val dim = new Dimension(width, length, height)
+		} else {
+			dim = new Dimension(width, length)
+		}
+		board = new ChessBoard(dim)
+		for (val entry <- config \\ "board-pieces" \ "piece-setup") {
+			val pieceType = (entry \ "@piece").text
+			val playerNumber = (entry \ "@player").text.toInt
+			val x = (entry \ "@x").text.toInt
+			val y = (entry \ "@y").text.toInt
+			val position = new Position(x, y)
+			board.squares(x)(y) = buildPiece(pieceType, playerNumber, position)
+		}
+	}
+
+	def buildPiece(pieceType: String, playerNumber: Int, position: Position): Piece = {
+		var color: Color = null
+		var piece: Piece = null
+		playerNumber match {
+			case 1 => color = White
+			case 2 => color = Black
+		}
+		pieceType match {
+			case "rook" => piece = new Rook()
+			case "knight" => piece = new Knight()
+			case "bishop" => piece = new Bishop()
+			case "queen" => piece = new Queen()
+			case "king" => piece = new King()
+			case "pawn" => piece = new Pawn()
+			case _ => piece = new Pawn()
+		}
+		piece.color = color
+		piece.position = position
+		return piece
+	}
+
+	def move(pos: Position, piece: Piece) {
 		var mvtInfo = new MovementInfo(piece.position, pos, piece, new Dimension(8, 8), history)
-		if(piece.canMove(mvtInfo)) {
+		if (piece.canMove(mvtInfo)) {
 			var action = new Action(piece.position, pos, piece)
 			history.addAction(action)
 			board.squares(pos.x)(pos.y) = piece

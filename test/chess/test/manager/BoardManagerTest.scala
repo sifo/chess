@@ -1,18 +1,17 @@
 package chess.test.manager
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
-import org.scalatest.Spec
 import org.scalatest.BeforeAndAfter
-import chess.entity.Player
+import org.scalatest.Spec
 import chess.entity.Color._
+import chess.entity.Bishop
+import chess.entity.Pawn
+import chess.entity.Piece
+import chess.entity.Position
+import chess.entity.Rook
+import chess.history.Action
 import chess.manager.BoardManager
 import chess.ChessModel
-import chess.entity.Position
-import chess.entity.Piece
-import chess.entity.Rook
-import chess.entity.Pawn
-import chess.history.Action
+import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class BoardManagerTest extends Spec with BeforeAndAfter {
@@ -37,8 +36,8 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 		action = boardManager.history.getLastAction()
 	}
 
-	describe("BoardManager") {
-		
+	describe("BoardManager movement") {
+
 		it("should change position on piece after a move") {
 			assert(movingPiece.position.equals(pos))
 		}
@@ -50,21 +49,59 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 		it("should put piece on final position on board after a move") {
 			assert(boardManager.board.squares(0)(1) == movingPiece)
 		}
-		
+
 		it("should remove attacked piece on destination position if any") {
 			assert(boardManager.board.squares(0)(1) != attackedPiece)
 		}
-		
+
 		it("should add action to history with initial position") {
 			assert(action.src.equals(new Position(0, 0)))
 		}
-		
+
 		it("should add action to history with final position") {
 			assert(action.dst.equals(new Position(0, 1)))
 		}
-		
+
 		it("should add action to history with piece") {
 			assert(action.piece == movingPiece)
+		}
+		
+		it("should be able to create board with standard setup for pieces") {
+			val rook = boardManager.board.squares(7)(0)
+			val pawn = boardManager.board.squares(7)(6)
+			assert(rook.isInstanceOf[Rook])
+			assert(pawn.isInstanceOf[Pawn])
+			assert(rook.color == White)
+			assert(pawn.color == Black)
+		}
+	}
+
+	describe("BoardManager build piece") {
+
+		it("should assign player 1 with color white") {
+			val piece = boardManager.buildPiece("bishop", 1, null)
+			assert(piece.color == White)
+		}
+
+		it("should assign player 2 with color black") {
+			val piece = boardManager.buildPiece("bishop", 2, null)
+			assert(piece.color == Black)
+		}
+
+		it("should create piece with correct position") {
+			val position = new Position(1, 2)
+			val piece = boardManager.buildPiece("bishop", 1, position)
+			assert(piece.position.equals(position))
+		}
+
+		it("should be able to create piece of type bishop") {
+			val piece = boardManager.buildPiece("bishop", 1, null)
+			assert(piece.isInstanceOf[Bishop])
+		}
+
+		it("should be able to create piece of type pawn") {
+			val piece = boardManager.buildPiece("pawn", 1, null)
+			assert(piece.isInstanceOf[Pawn])
 		}
 	}
 }
