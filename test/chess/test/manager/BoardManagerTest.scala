@@ -22,6 +22,7 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 	var movingPiece: Piece = _
 	var attackedPiece: Piece = _
 	var action: Action = _
+	var playerIndexBeforeMove: Int = _
 
 	before {
 		chessModel = new ChessModel()
@@ -32,11 +33,19 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 		attackedPiece.position = new Position(0, 1)
 		boardManager = new BoardManager(chessModel)
 		boardManager.board.squares(0)(0) = movingPiece
+		playerIndexBeforeMove = chessModel.playerManager.currentPlayerIndex
 		boardManager.move(pos, movingPiece)
 		action = boardManager.history.getLastAction()
 	}
 
 	describe("BoardManager movement") {
+
+		it("should change current player") {
+			if (playerIndexBeforeMove != chessModel.playerManager.players.size - 1)
+				assert(playerIndexBeforeMove + 1 == chessModel.playerManager.currentPlayerIndex)
+			else
+				assert(0 == chessModel.playerManager.currentPlayerIndex)
+		}
 
 		it("should change position on piece after a move") {
 			assert(movingPiece.position.equals(pos))
@@ -65,7 +74,7 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 		it("should add action to history with piece") {
 			assert(action.piece == movingPiece)
 		}
-		
+
 		it("should be able to create board with standard setup for pieces") {
 			val rook = boardManager.board.squares(7)(0)
 			val pawn = boardManager.board.squares(7)(6)
@@ -79,28 +88,28 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 	describe("BoardManager build piece") {
 
 		it("should assign player 1 with color white") {
-			val piece = boardManager.buildPiece("bishop", 1, null)
+			val piece = BoardManager.buildPiece("bishop", 1, null)
 			assert(piece.color == White)
 		}
 
 		it("should assign player 2 with color black") {
-			val piece = boardManager.buildPiece("bishop", 2, null)
+			val piece = BoardManager.buildPiece("bishop", 2, null)
 			assert(piece.color == Black)
 		}
 
 		it("should create piece with correct position") {
 			val position = new Position(1, 2)
-			val piece = boardManager.buildPiece("bishop", 1, position)
+			val piece = BoardManager.buildPiece("bishop", 1, position)
 			assert(piece.position.equals(position))
 		}
 
 		it("should be able to create piece of type bishop") {
-			val piece = boardManager.buildPiece("bishop", 1, null)
+			val piece = BoardManager.buildPiece("bishop", 1, null)
 			assert(piece.isInstanceOf[Bishop])
 		}
 
 		it("should be able to create piece of type pawn") {
-			val piece = boardManager.buildPiece("pawn", 1, null)
+			val piece = BoardManager.buildPiece("pawn", 1, null)
 			assert(piece.isInstanceOf[Pawn])
 		}
 	}
