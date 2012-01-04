@@ -6,7 +6,7 @@ import chess.entity.Color._
 import scala.xml.XML
 
 object PlayerManager {
-	var MAX_PLAYER_NUMBER = 2
+	var MAX_PLAYER_NUMBER = 6
 
 	def buildPlayer(playerNumber: Int): Player = {
 		val color = playerNumberToColor(playerNumber)
