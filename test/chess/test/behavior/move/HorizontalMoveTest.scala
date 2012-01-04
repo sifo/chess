@@ -11,6 +11,7 @@ import org.scalatest.BeforeAndAfter
 import chess.behavior.move.MoveBehavior
 import chess.behavior.move.HorizontalMove
 import chess.entity.ChessBoard
+import chess.entity.Rook
 
 @RunWith(classOf[JUnitRunner])
 class HorizontalMoveTest extends Spec with BeforeAndAfter {
@@ -57,6 +58,14 @@ class HorizontalMoveTest extends Spec with BeforeAndAfter {
 			dst = new Position(1, 3)
 			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
 			assert(movement.canMove(mvtInfo))
+		}
+		
+		it("should reject if there is a piece on the way") {
+			dst = new Position(7, 3)
+			val pieceOnTheWay = new Rook()
+			chessBoard.squares(5)(3) = pieceOnTheWay
+			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			assert(!movement.canMove(mvtInfo))
 		}
 		
 		it("should reject move two squares on the top") {
