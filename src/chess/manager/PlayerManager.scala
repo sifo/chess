@@ -2,23 +2,50 @@ package chess.manager
 import chess.ChessModel
 import scala.collection.mutable.ListBuffer
 import chess.entity.Player
+import chess.entity.Color._
+import scala.xml.XML
 
 object PlayerManager {
 	var MAX_PLAYER_NUMBER = 2
+
+	def buildPlayer(playerNumber: Int): Player = {
+		val color = playerNumberToColor(playerNumber)
+		val name = playerNumber.toString
+		return new Player(name, color)
+	}
+
+	def playerNumberToColor(playerNumber: Int): Color = {
+		var color: Color = null
+		playerNumber match {
+			case 1 => color = White
+			case 2 => color = Black
+		}
+		return color
+	}
+
 }
 
 class PlayerManager(val chessModel: ChessModel) {
 	var players = new ListBuffer[Player]
 	var currentPlayerIndex = 0
+	loadConfig("res/standard-chess-config.xml")
 
-	def add(p : Player) {
+	def loadConfig(configFile: String) {
+		val config = XML.loadFile(configFile)
+		for (val entry <- config \\ "player-config" \ "player-direction") {
+			val playerNumber = (entry \ "@player").text.toInt
+			add(PlayerManager.buildPlayer(playerNumber))
+		}
+	}
+
+	def add(p: Player) {
 		if (players.size == PlayerManager.MAX_PLAYER_NUMBER) {
-			return;
+			return ;
 		}
 		players += p;
 	}
 
-	def setNextPlayer() : Unit = {
+	def setNextPlayer(): Unit = {
 		if (currentPlayerIndex == players.size - 1)
 			currentPlayerIndex = 0
 		else
