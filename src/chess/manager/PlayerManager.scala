@@ -4,6 +4,7 @@ import scala.collection.mutable.ListBuffer
 import chess.entity.Player
 import chess.entity.Color._
 import scala.xml.XML
+import chess.entity.Piece
 
 object PlayerManager {
 	var MAX_PLAYER_NUMBER = 6
@@ -17,10 +18,19 @@ object PlayerManager {
 	def playerNumberToColor(playerNumber: Int): Color = {
 		var color: Color = null
 		playerNumber match {
-			case 1 => color = White
-			case 2 => color = Black
+			case 0 => color = White
+			case 1 => color = Black
 		}
 		return color
+	}
+	
+	def playerColorToNumber(color: Color): Int = {
+		var index = 0
+		color match {
+			case Black => index = 1
+			case White => index = 0
+		}
+		return index
 	}
 
 }
@@ -51,5 +61,12 @@ class PlayerManager(val chessModel: ChessModel) {
 		else
 			currentPlayerIndex += 1
 		chessModel.fireChangeCurrentPlayer
+	}
+	
+	def isPlayerTurn(piece : Piece): Boolean = {
+		var index = PlayerManager.playerColorToNumber(piece.color)
+		if(currentPlayerIndex == index)
+			return true
+		else return false
 	}
 }
