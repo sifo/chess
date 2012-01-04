@@ -45,7 +45,7 @@ object Board {
   }
 }
 
-class ChessBoard(dimension: Dimension) extends Board {
+class ChessBoard(var dimension: Dimension) extends Board {
   var squares = Array.ofDim[Piece](dimension.width, dimension.height);
   var winner: Int = 0;
 
@@ -68,7 +68,7 @@ class ChessBoard(dimension: Dimension) extends Board {
       false;
     } else {
     	val p = squares(src.x)(src.y)
-    	val m = new MovementInfo(p.getPosition, dst, p, dimension, null)
+    	val m = new MovementInfo(p.position, dst, p, this, null)
     	p.canMove(m);
     }
   }

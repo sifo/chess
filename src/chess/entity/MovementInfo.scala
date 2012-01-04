@@ -5,7 +5,7 @@ class MovementInfo(
 	var src : Position,
 	var dst : Position,
 	var piece : Piece,
-	var boardDim : Dimension,
+	var chessBoard : ChessBoard,
 	var history : History
 ) {
 

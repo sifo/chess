@@ -7,7 +7,7 @@ trait HorizontalMove extends MoveBehavior {
 	override def canMove(movementInfo: MovementInfo): Boolean = {
 		val dest = movementInfo.dst
 		val pos = movementInfo.src
-		val dim = movementInfo.boardDim
+		val dim = movementInfo.chessBoard.dimension
 		if (!dim.isInBounds(dest) || pos.equals(dest)) {
 			return super.canMove(movementInfo)
 		}

@@ -7,8 +7,8 @@ trait VerticalMove extends MoveBehavior {
 	override def canMove(movementInfo: MovementInfo): Boolean = {
 		val dest = movementInfo.dst
 		val pos = movementInfo.src
-		val dim = movementInfo.boardDim
-		if (!dim.isInBounds(dest) || pos.equals(dest)) {
+		val chessBoard = movementInfo.chessBoard
+		if (!chessBoard.dimension.isInBounds(dest) || pos.equals(dest)) {
 			return super.canMove(movementInfo)
 		}
 		if (dest.x == pos.x && dest.y != pos.y) {

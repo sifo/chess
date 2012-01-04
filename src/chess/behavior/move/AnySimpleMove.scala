@@ -8,8 +8,8 @@ trait AnySimpleMove extends MoveBehavior {
 	override def canMove(movementInfo: MovementInfo): Boolean = {
 		val dest = movementInfo.dst
 		val pos = movementInfo.src
-		val dim = movementInfo.boardDim
-		if (!dim.isInBounds(dest) || pos.equals(dest)) {
+		val board = movementInfo.chessBoard
+		if (!board.dimension.isInBounds(dest) || pos.equals(dest)) {
 			return super.canMove(movementInfo)
 		}
 		if ((dest.x == pos.x && Math.abs(dest.y - pos.y) == 1)
