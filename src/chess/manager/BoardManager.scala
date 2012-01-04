@@ -15,13 +15,33 @@ import chess.entity.Bishop
 import chess.entity.Queen
 import chess.entity.Pawn
 import chess.entity.Color._
+import chess.entity.Player
+
+object BoardManager {
+
+	def buildPiece(pieceType: String, playerNumber: Int, position: Position): Piece = {
+		var piece: Piece = null
+		pieceType match {
+			case "rook" => piece = new Rook()
+			case "knight" => piece = new Knight()
+			case "bishop" => piece = new Bishop()
+			case "queen" => piece = new Queen()
+			case "king" => piece = new King()
+			case "pawn" => piece = new Pawn()
+			case _ => piece = new Pawn()
+		}
+		piece.color = PlayerManager.playerNumberToColor(playerNumber)
+		piece.position = position
+		return piece
+	}
+}
 
 class BoardManager(val chessModel: ChessModel) {
 	var board: ChessBoard = _
 	var history: ChessHistory = _
 	loadConfig("res/standard-chess-config.xml")
 
-	def loadConfig(configFile : String) {
+	def loadConfig(configFile: String) {
 		history = new ChessHistory
 		val config = XML.loadFile(configFile)
 		val is3DBoard = (config \\ "three-dimensional-board" \ "@enabled").text.toBoolean
@@ -43,29 +63,8 @@ class BoardManager(val chessModel: ChessModel) {
 			val x = (entry \ "@x").text.toInt
 			val y = (entry \ "@y").text.toInt
 			val position = new Position(x, y)
-			board.squares(x)(y) = buildPiece(pieceType, playerNumber, position)
+			board.squares(x)(y) = BoardManager.buildPiece(pieceType, playerNumber, position)
 		}
-	}
-
-	def buildPiece(pieceType: String, playerNumber: Int, position: Position): Piece = {
-		var color: Color = null
-		var piece: Piece = null
-		playerNumber match {
-			case 1 => color = White
-			case 2 => color = Black
-		}
-		pieceType match {
-			case "rook" => piece = new Rook()
-			case "knight" => piece = new Knight()
-			case "bishop" => piece = new Bishop()
-			case "queen" => piece = new Queen()
-			case "king" => piece = new King()
-			case "pawn" => piece = new Pawn()
-			case _ => piece = new Pawn()
-		}
-		piece.color = color
-		piece.position = position
-		return piece
 	}
 
 	def move(pos: Position, piece: Piece) {
@@ -76,6 +75,7 @@ class BoardManager(val chessModel: ChessModel) {
 			board.squares(pos.x)(pos.y) = piece
 			board.squares(piece.position.x)(piece.position.y) = null
 			piece.setPosition(new Position(pos.x, pos.y))
+			chessModel.playerManager.setNextPlayer
 		}
 	}
 }
