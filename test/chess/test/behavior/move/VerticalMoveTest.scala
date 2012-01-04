@@ -12,6 +12,7 @@ import chess.behavior.move.MoveBehavior
 import chess.behavior.move.HorizontalMove
 import chess.behavior.move.VerticalMove
 import chess.entity.ChessBoard
+import chess.entity.Rook
 
 @RunWith(classOf[JUnitRunner])
 class VerticalMoveTest extends Spec with BeforeAndAfter {
@@ -58,6 +59,14 @@ class VerticalMoveTest extends Spec with BeforeAndAfter {
 			dst = new Position(3, 1)
 			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
 			assert(movement.canMove(mvtInfo))
+		}
+		
+		it("should reject if there is a piece on the way") {
+			dst = new Position(3, 7)
+			val pieceOnTheWay = new Rook()
+			chessBoard.squares(3)(5) = pieceOnTheWay
+			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			assert(!movement.canMove(mvtInfo))
 		}
 
 		it("should reject move two squares on the right") {
