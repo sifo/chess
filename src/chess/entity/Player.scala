@@ -1,6 +1,6 @@
 package chess.entity
 import chess.entity.Color._
 
-class Player(name : String, color : Color) {
+class Player(var name : String, var color : Color) {
 
 }
