@@ -69,13 +69,15 @@ class BoardManager(val chessModel: ChessModel) {
 
 	def move(pos: Position, piece: Piece) {
 		var mvtInfo = new MovementInfo(piece.position, pos, piece, board, history)
-		if (piece.canMove(mvtInfo)) {
-			var action = new Action(piece.position, pos, piece)
-			history.addAction(action)
-			board.squares(pos.x)(pos.y) = piece
-			board.squares(piece.position.x)(piece.position.y) = null
-			piece.position = new Position(pos.x, pos.y)
-			chessModel.playerManager.setNextPlayer
+		if(chessModel.playerManager.isPlayerTurn(piece)) {
+			if (piece.canMove(mvtInfo)) {
+				var action = new Action(piece.position, pos, piece)
+				history.addAction(action)
+				board.squares(pos.x)(pos.y) = piece
+				board.squares(piece.position.x)(piece.position.y) = null
+				piece.position = new Position(pos.x, pos.y)
+				chessModel.playerManager.setNextPlayer
+			}
 		}
 	}
 }
