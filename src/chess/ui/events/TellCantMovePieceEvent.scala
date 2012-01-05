@@ -1,5 +1,4 @@
 package chess.ui.events
 
-class TellCantMovePieceEvent extends Event {
-
+class TellCantMovePieceEvent(var msg : String) extends Event {
 }

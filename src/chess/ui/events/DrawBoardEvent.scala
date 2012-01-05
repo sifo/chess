@@ -1,5 +1,6 @@
 package chess.ui.events
+import chess.entity.Dimension
 
-class DrawBoardEvent extends Event {
+class DrawBoardEvent(var dimension : Dimension) extends Event {
 
 }
