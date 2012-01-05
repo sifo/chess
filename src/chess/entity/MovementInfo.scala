@@ -1,12 +1,12 @@
 package chess.entity
-import chess.history.History
+import chess.history.ChessHistory
 
 class MovementInfo(
 	var src : Position,
 	var dst : Position,
 	var piece : Piece,
 	var chessBoard : ChessBoard,
-	var history : History
+	var history : ChessHistory
 ) {
 
 }
