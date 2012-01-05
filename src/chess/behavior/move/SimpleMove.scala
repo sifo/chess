@@ -1,7 +1,7 @@
 package chess.behavior.move
 import chess.entity.Position
 import chess.entity.MovementInfo
-import chess.entity.Color
+import chess.entity.Color._
 import chess.entity.Pawn
 
 trait SimpleMove extends MoveBehavior {
