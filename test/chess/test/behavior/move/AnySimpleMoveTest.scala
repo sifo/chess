@@ -3,7 +3,6 @@ import chess.behavior.move.AnySimpleMove
 import chess.entity.Position
 import chess.entity.MovementInfo
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
 import org.scalatest.Spec
 import org.scalatest.BeforeAndAfter

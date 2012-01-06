@@ -28,7 +28,9 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 		chessModel = new ChessModel()
 		pos = new Position(0, 1)
 		movingPiece = new Rook()
+		movingPiece.color = White
 		attackedPiece = new Pawn()
+		attackedPiece.color = Black
 		movingPiece.position = new Position(0, 0)
 		attackedPiece.position = new Position(0, 1)
 		boardManager = new BoardManager(chessModel)
@@ -88,12 +90,12 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 	describe("BoardManager build piece") {
 
 		it("should assign player 1 with color white") {
-			val piece = BoardManager.buildPiece("bishop", 1, null)
+			val piece = BoardManager.buildPiece("bishop", 0, null)
 			assert(piece.color == White)
 		}
 
 		it("should assign player 2 with color black") {
-			val piece = BoardManager.buildPiece("bishop", 2, null)
+			val piece = BoardManager.buildPiece("bishop", 1, null)
 			assert(piece.color == Black)
 		}
 
