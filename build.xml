@@ -10,7 +10,6 @@
 
 	<!-- Define scala CLASSPATH. -->
 	<path id="scala.classpath">
-		<pathelement location="bin/test/classes" />
 		<pathelement location="bin/classes" />
 		<pathelement location="lib/scala-compiler.jar" />
 		<pathelement location="lib/scala-library.jar" />
@@ -69,6 +68,10 @@
 	<target name="test" depends="test-compile">
 		<junit printsummary="yes" haltonfailure="false" fork="true">
 			<classpath refid="scala.classpath" />
+			<classpath>	
+				<pathelement location="scala.classpath" />
+				<pathelement location="bin/test/classes" />
+			</classpath>
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" />
 			<batchtest todir="bin/test/data">
