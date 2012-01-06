@@ -66,7 +66,7 @@
 
 	<!-- Execute tests with junit. -->
 	<target name="test" depends="test-compile">
-		<junit printsummary="yes" haltonfailure="false" fork="true">
+		<junit printsummary="no" haltonfailure="false" fork="true">
 			<classpath refid="scala.classpath" />
 			<classpath>	
 				<pathelement location="scala.classpath" />
