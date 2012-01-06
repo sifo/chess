@@ -1,7 +1,7 @@
 package chess
 import chess.ui.TextView
 
-class ChessController(chessModel : ChessModel) {
+class ChessController(var chessModel : ChessModel) {
 	val view = new TextView(this)
 	
 	def addListenersToModel()= chessModel.addChessListener(view)

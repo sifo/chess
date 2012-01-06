@@ -51,7 +51,7 @@ class BoardManager(val chessModel: ChessModel) {
 		val length = (config \\ "board-dimension" \ "@length").text.toInt
 		var dim: Dimension = null
 		if (is3DBoard) {
-			val height = (config \\ "board-dimension" \ "@height").text.toInt
+			//val height = (config \\ "board-dimension" \ "@height").text.toInt
 			//val dim = new Dimension(width, length, height)
 		} else {
 			dim = new Dimension(width, length)
