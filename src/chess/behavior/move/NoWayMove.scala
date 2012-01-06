@@ -5,6 +5,6 @@ import chess.entity.MovementInfo
 trait NoWayMove extends MoveBehavior {
 	
 	override def canMove(movementInfo : MovementInfo): Boolean = {
-		false || super.canMove(movementInfo)
+		super.canMove(movementInfo)
 	}	
 }
