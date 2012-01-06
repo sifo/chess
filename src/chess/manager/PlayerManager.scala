@@ -23,12 +23,12 @@ object PlayerManager {
 		}
 		return color
 	}
-	
+
 	def playerColorToNumber(color: Color): Int = {
 		var index = 0
 		color match {
-			case Black => index = 1
 			case White => index = 0
+			case Black => index = 1
 		}
 		return index
 	}
@@ -62,10 +62,10 @@ class PlayerManager(val chessModel: ChessModel) {
 			currentPlayerIndex += 1
 		chessModel.fireChangeCurrentPlayer
 	}
-	
-	def isPlayerTurn(piece : Piece): Boolean = {
+
+	def isPlayerTurn(piece: Piece): Boolean = {
 		var index = PlayerManager.playerColorToNumber(piece.color)
-		if(currentPlayerIndex == index)
+		if (currentPlayerIndex == index)
 			return true
 		else return false
 	}
