@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<project name="chess" default="compile">
+
+	<!-- Create necessary folders. -->
+	<target name="init">
+		<mkdir dir="bin/classes" />
+		<mkdir dir="dist" />
+	</target>
+
+	<!-- Define scala CLASSPATH. -->
+	<path id="scala.classpath">
+		<pathelement location="bin/test/classes" />
+		<pathelement location="bin/classes" />
+		<pathelement location="lib/scala-compiler.jar" />
+		<pathelement location="lib/scala-library.jar" />
+		<pathelement location="lib/scalatest-1.6.1.jar" />
+		<pathelement location="lib/junit-4.10.jar" />
+	</path>
+	<taskdef resource="scala/tools/ant/antlib.xml">
+		<classpath refid="scala.classpath" />
+	</taskdef>
+
+	<!-- Compile sources. -->
+	<target name="compile" depends="init">
+		<scalac srcdir="src" destdir="bin/classes" classpathref="scala.classpath" force="changed" />
+	</target>
+
+	<!-- Execute program. -->
+	<target name="execute" depends="compile,test">
+		<java classname="chess.Main" classpath="bin/classes" fork="true">
+		</java>
+	</target>
+
+	<!-- Create jar archive. -->
+	<target name="archive" depends="compile">
+		<jar basedir="bin/classes" destfile="dist/chess_project.jar">
+			<fileset dir=".">
+				<filename name="res/**/*" />
+			</fileset>
+		</jar>
+	</target>
+
+	<!-- Clean project. -->
+	<target name="clean" depends="init">
+		<delete dir="bin" />
+		<delete dir="dist" />
+	</target>
+
+	<!-- Create necessary folders for tests. -->
+	<target name="test-init">
+		<delete dir="bin/test/data" />
+		<delete dir="bin/test/reports" />
+		<mkdir dir="bin/test/classes" />
+		<mkdir dir="bin/test/data" />
+		<mkdir dir="bin/test/reports" />
+	</target>
+
+	<!-- Compile sources from tests . -->
+	<target name="test-compile" depends="compile,archive,test-init">
+		<scalac destdir="bin/test/classes" srcdir="test" classpathref="scala.classpath" force="changed">
+			<classpath>
+				<pathelement path="dist/chess_project.jar" />
+			</classpath>
+		</scalac>
+	</target>
+
+	<!-- Execute tests with junit. -->
+	<target name="test" depends="test-compile">
+		<junit printsummary="yes" haltonfailure="false" fork="true">
+			<classpath refid="scala.classpath" />
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" />
+			<batchtest todir="bin/test/data">
+				<fileset dir="bin/test/classes" includes="**/test/**/*Test.class" />
+			</batchtest>
+		</junit>
+	</target>
+	<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
+
+</project>
