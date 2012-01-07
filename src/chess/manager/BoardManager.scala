@@ -16,6 +16,10 @@ import chess.entity.Queen
 import chess.entity.Pawn
 import chess.entity.Color._
 import chess.entity.Player
+import chess.entity.Princess
+import chess.entity.Grasshopper
+import chess.entity.Empress
+import chess.entity.Nightrider
 
 object BoardManager {
 
@@ -28,6 +32,10 @@ object BoardManager {
 			case "queen" => piece = new Queen()
 			case "king" => piece = new King()
 			case "pawn" => piece = new Pawn()
+			case "princess" => piece = new Princess()
+			case "grasshopper" => piece = new Grasshopper()
+			case "empress" => piece = new Empress()
+			case "nightrider" => piece = new Nightrider()
 			case _ => piece = new Pawn()
 		}
 		piece.color = PlayerManager.playerNumberToColor(playerNumber)
@@ -69,7 +77,7 @@ class BoardManager(val chessModel: ChessModel) {
 
 	def move(pos: Position, piece: Piece) {
 		var mvtInfo = new MovementInfo(piece.position, pos, piece, board, history)
-		if(chessModel.playerManager.isPlayerTurn(piece)) {
+		if (chessModel.playerManager.isPlayerTurn(piece)) {
 			if (piece.canMove(mvtInfo)) {
 				var action = new Action(piece.position, pos, piece)
 				history.addAction(action)
