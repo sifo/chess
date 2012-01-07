@@ -39,7 +39,7 @@ object BoardManager {
 class BoardManager(val chessModel: ChessModel) {
 	var board: ChessBoard = _
 	var history: ChessHistory = _
-	loadConfig("res/standard-chess-config.xml")
+	loadConfig(chessModel.config)
 
 	def loadConfig(configFile: String) {
 		history = new ChessHistory

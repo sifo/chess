@@ -3,7 +3,7 @@ import chess.manager.BoardManager
 import chess.manager.PlayerManager
 import scala.collection.mutable.ListBuffer
 
-class ChessModel extends Game {
+class ChessModel(var config: String) extends Game {
 
 	var boardManager = new BoardManager(this)
 	var playerManager = new PlayerManager(this)

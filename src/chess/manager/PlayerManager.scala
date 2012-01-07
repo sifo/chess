@@ -38,7 +38,7 @@ object PlayerManager {
 class PlayerManager(val chessModel: ChessModel) {
 	var players = new ListBuffer[Player]
 	var currentPlayerIndex = 0
-	loadConfig("res/standard-chess-config.xml")
+	loadConfig(chessModel.config)
 
 	def loadConfig(configFile: String) {
 		val config = XML.loadFile(configFile)
