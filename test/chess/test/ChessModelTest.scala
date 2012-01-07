@@ -7,6 +7,7 @@ import chess.ChessController
 import chess.ChessModel
 import chess.ChessListener
 import chess.ui.TextView
+import chess.Main
 
 @RunWith(classOf[JUnitRunner])
 class ChessModelTest extends Spec with BeforeAndAfter {
@@ -16,7 +17,7 @@ class ChessModelTest extends Spec with BeforeAndAfter {
 	var chessListener: ChessListener = _
 	
 	before {
-		chessModel = new ChessModel()
+		chessModel = new ChessModel(Main.DEFAULT_CONFIG)
 		chessController = new ChessController(chessModel)
 		chessListener = new TextView(chessController)
 	}

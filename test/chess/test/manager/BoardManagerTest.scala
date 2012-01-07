@@ -12,6 +12,7 @@ import chess.history.Action
 import chess.manager.BoardManager
 import chess.ChessModel
 import org.scalatest.junit.JUnitRunner
+import chess.Main
 
 @RunWith(classOf[JUnitRunner])
 class BoardManagerTest extends Spec with BeforeAndAfter {
@@ -25,16 +26,17 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 	var playerIndexBeforeMove: Int = _
 
 	before {
-		chessModel = new ChessModel()
-		pos = new Position(0, 1)
+		chessModel = new ChessModel(Main.DEFAULT_CONFIG)
+		pos = new Position(4, 5)
 		movingPiece = new Rook()
 		movingPiece.color = White
 		attackedPiece = new Pawn()
 		attackedPiece.color = Black
-		movingPiece.position = new Position(0, 0)
-		attackedPiece.position = new Position(0, 1)
+		movingPiece.position = new Position(4, 4)
+		attackedPiece.position = new Position(4, 5)
 		boardManager = new BoardManager(chessModel)
-		boardManager.board.squares(0)(0) = movingPiece
+		boardManager.board.squares(4)(4) = movingPiece
+		boardManager.board.squares(4)(5) = attackedPiece
 		playerIndexBeforeMove = chessModel.playerManager.currentPlayerIndex
 		boardManager.move(pos, movingPiece)
 		action = boardManager.history.getLastAction()
@@ -54,23 +56,23 @@ class BoardManagerTest extends Spec with BeforeAndAfter {
 		}
 
 		it("should remove piece on last position on board after a move") {
-			assert(boardManager.board.squares(0)(0) == null)
+			assert(boardManager.board.squares(4)(4) == null)
 		}
 
 		it("should put piece on final position on board after a move") {
-			assert(boardManager.board.squares(0)(1) == movingPiece)
+			assert(boardManager.board.squares(4)(5) == movingPiece)
 		}
 
 		it("should remove attacked piece on destination position if any") {
-			assert(boardManager.board.squares(0)(1) != attackedPiece)
+			assert(boardManager.board.squares(4)(5) != attackedPiece)
 		}
 
 		it("should add action to history with initial position") {
-			assert(action.src.equals(new Position(0, 0)))
+			assert(action.src.equals(new Position(4, 4)))
 		}
 
 		it("should add action to history with final position") {
-			assert(action.dst.equals(new Position(0, 1)))
+			assert(action.dst.equals(new Position(4, 5)))
 		}
 
 		it("should add action to history with piece") {

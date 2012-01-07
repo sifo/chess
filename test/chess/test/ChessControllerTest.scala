@@ -5,6 +5,7 @@ import org.scalatest.Spec
 import org.scalatest.BeforeAndAfter
 import chess.ChessController
 import chess.ChessModel
+import chess.Main
 
 @RunWith(classOf[JUnitRunner])
 class ChessControllerTest extends Spec with BeforeAndAfter {
@@ -12,7 +13,8 @@ class ChessControllerTest extends Spec with BeforeAndAfter {
 	var controller: ChessController = _
 	
 	before {
-		controller = new ChessController(new ChessModel)
+		val chessModel = new ChessModel(Main.DEFAULT_CONFIG)
+		controller = new ChessController(chessModel)
 	}
 	
 	describe("ChessController") {

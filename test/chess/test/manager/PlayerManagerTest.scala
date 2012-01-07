@@ -9,6 +9,7 @@ import chess.entity.Color._
 import chess.manager.PlayerManager
 import chess.ChessModel
 import chess.entity.Rook
+import chess.Main
 
 @RunWith(classOf[JUnitRunner])
 class PlayerManagerTest extends Spec with BeforeAndAfter {
@@ -17,7 +18,7 @@ class PlayerManagerTest extends Spec with BeforeAndAfter {
 	var chessModel: ChessModel = _
 	
 	before {
-		chessModel = new ChessModel()
+		chessModel = new ChessModel(Main.DEFAULT_CONFIG)
 		playerManager = new PlayerManager(chessModel)
 		val playerBlack = new Player("name1", Black)
 		val playerWhite = new Player("name2", White)
