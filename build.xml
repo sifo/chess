@@ -69,7 +69,6 @@
 		<junit printsummary="no" haltonfailure="false" fork="true">
 			<classpath refid="scala.classpath" />
 			<classpath>	
-				<pathelement location="scala.classpath" />
 				<pathelement location="bin/test/classes" />
 			</classpath>
 			<formatter type="brief" usefile="false" />
