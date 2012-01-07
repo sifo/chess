@@ -40,6 +40,8 @@ trait LMove extends MoveBehavior {
   }
 
   override def canMove(mvtInfo: MovementInfo): Boolean = {
-    possibleMoves(mvtInfo)(mvtInfo.dst.x)(mvtInfo.dst.y) == 1;
+  	if(possibleMoves(mvtInfo)(mvtInfo.dst.x)(mvtInfo.dst.y) == 1)
+  		return true
+  	return super.canMove(mvtInfo)
   }
 }
