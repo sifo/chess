@@ -20,6 +20,7 @@ import chess.entity.Princess
 import chess.entity.Grasshopper
 import chess.entity.Empress
 import chess.entity.Nightrider
+import chess.entity.Piece
 
 object BoardManager {
 
@@ -47,15 +48,18 @@ object BoardManager {
 class BoardManager(val chessModel: ChessModel) {
 	var board: ChessBoard = _
 	var history: ChessHistory = _
+	var isHorizontalConnected: Boolean = _
+	var isVerticalConnected: Boolean = _
+	var is3DBoard: Boolean = _
 	var piecesTaken = List[Piece]()
 	loadConfig(chessModel.config)
 
 	def loadConfig(configFile: String) {
 		history = new ChessHistory
 		val config = XML.loadFile(configFile)
-		val is3DBoard = (config \\ "three-dimensional-board" \ "@enabled").text.toBoolean
-		val isHorizontalConnected = (config \\ "horizontal-connected-board" \ "@enabled").text.toBoolean
-		val isVerticalConnected = (config \\ "vertical-connected-board" \ "@enabled").text.toBoolean
+		is3DBoard = (config \\ "three-dimensional-board" \ "@enabled").text.toBoolean
+		isHorizontalConnected = (config \\ "horizontal-connected-board" \ "@enabled").text.toBoolean
+		isVerticalConnected = (config \\ "vertical-connected-board" \ "@enabled").text.toBoolean
 		val width = (config \\ "board-dimension" \ "@width").text.toInt
 		val length = (config \\ "board-dimension" \ "@length").text.toInt
 		var dim: Dimension = null
@@ -76,20 +80,62 @@ class BoardManager(val chessModel: ChessModel) {
 		}
 	}
 
-	def move(pos: Position, piece: Piece) {
-		var mvtInfo = new MovementInfo(piece.position, pos, piece, board, history)
+	def move(dest: Position, piece: Piece) {
+		if (canMove(dest, piece)) {
+			var action = new Action(piece.position, dest, piece)
+			history.addAction(action)
+			board.squares(dest.x)(dest.y) = piece
+			piecesTaken = board.squares(piece.position.x)(piece.position.y) :: piecesTaken
+			board.squares(piece.position.x)(piece.position.y) = null
+			piece.position = new Position(dest.x, dest.y)
+			chessModel.playerManager.setNextPlayer
+		}
+	}
+
+	def canMove(dest: Position, piece: Piece): Boolean = {
+		var mvtInfo = new MovementInfo(piece.position, dest, piece, board, history)
+		if (!mvtInfo.chessBoard.dimension.isInBounds(dest)
+			|| mvtInfo.src.equals(dest)) {
+			return false
+		}
 		if (chessModel.playerManager.isPlayerTurn(piece)) {
-			if (board.dimension.isInBounds(pos) && piece.color != board.squares(pos.x)(pos.y).color) {
-				if (piece.canMove(mvtInfo)) {
-					var action = new Action(piece.position, pos, piece)
-					history.addAction(action)
-					board.squares(pos.x)(pos.y) = piece
-					piecesTaken = board.squares(piece.position.x)(piece.position.y) :: piecesTaken 
-					board.squares(piece.position.x)(piece.position.y) = null
-					piece.position = new Position(pos.x, pos.y)
-					chessModel.playerManager.setNextPlayer
+			if (board.dimension.isInBounds(dest)) {
+				val pieceDst = board.squares(dest.x)(dest.y)
+				if (pieceDst == null || (pieceDst != null && piece.color != pieceDst.color)) {
+					if (isHorizontalConnected) {
+						mvtInfo = adaptMovementInfoForHorizontalBoard(mvtInfo)
+						if(piece.canMove(mvtInfo)) return true
+						mvtInfo.dst.x = mvtInfo.dst.x - board.dimension.width
+						if(piece.canMove(mvtInfo)) return true
+						mvtInfo.dst.x = mvtInfo.dst.x + 2 * board.dimension.width
+						if(piece.canMove(mvtInfo)) return true
+					} else if (piece.canMove(mvtInfo)) {
+						return true
+					}
 				}
 			}
 		}
+		return false
+	}
+
+	def adaptMovementInfoForHorizontalBoard(mvtInfo: MovementInfo): MovementInfo = {
+		val dimension = new Dimension(board.dimension.width * 3, board.dimension.height)
+		val boardH = new ChessBoard(dimension)
+		for (x <- 0 to board.dimension.width - 1) {
+			for (y <- 0 to board.dimension.height - 1) {
+				boardH.squares(x)(y) = board.squares(x)(y)
+				boardH.squares(x + board.dimension.width)(y) = board.squares(x)(y)
+				boardH.squares(x + board.dimension.width * 2)(y) = board.squares(x)(y)
+			}
+		}
+
+		val positionH = new Position(mvtInfo.piece.position.x, mvtInfo.piece.position.y)
+		positionH.x = positionH.x + board.dimension.width
+		val destH = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+		destH.x = destH.x + board.dimension.width
+		val pieceH = mvtInfo.piece
+		//		pieceH.position = positionH // attention effet de bord grave
+
+		return new MovementInfo(positionH, destH, pieceH, boardH, history)
 	}
 }
