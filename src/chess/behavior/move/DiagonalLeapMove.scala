@@ -29,7 +29,7 @@ trait DiagonalLeapMove extends MoveBehavior {
 
 		output;
 	}
-	
+
 	private def numberOfPieceOnPath(
 		board: ChessBoard, pos: Position, dest: Position): Int = {
 		var min = Math.min(pos.x, dest.x) + 1
@@ -37,22 +37,23 @@ trait DiagonalLeapMove extends MoveBehavior {
 		var res = 0
 		var y = pos.y
 		var decal = if (pos.y < dest.y) 1 else -1
-		for(i <- min to max) {
-			if(board.squares(i)(y) != null)
-				res = res + 1
+		for (i <- min to max) {
 			y = y + decal
+			if (board.squares(i)(y) != null)
+				res = res + 1
 		}
 		return res
 	}
-	
+
 	override def canMove(mvtInfo: MovementInfo): Boolean = {
-		if (!mvtInfo.chessBoard.dimension.isInBounds(mvtInfo.dst) 
-				|| mvtInfo.src.equals(mvtInfo.dst)) {
-			return super.canMove(mvtInfo)
-		}
-		if (numberOfPieceOnPath(mvtInfo.chessBoard, mvtInfo.src, mvtInfo.dst) == 1)
-			if(possibleMoves(mvtInfo)(mvtInfo.dst.x)(mvtInfo.dst.y) == 1)
+		val dest = mvtInfo.dst
+		val pos = mvtInfo.src
+		val board = mvtInfo.chessBoard
+		if (Math.abs(pos.x - dest.x) == Math.abs(pos.y - dest.y)) {
+			if (numberOfPieceOnPath(mvtInfo.chessBoard, pos, dest) == 1) {
 				return true
+			}
+		}
 		return super.canMove(mvtInfo)
 	}
 }

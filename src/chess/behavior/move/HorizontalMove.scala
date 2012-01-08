@@ -9,9 +9,6 @@ trait HorizontalMove extends MoveBehavior {
 		val dest = movementInfo.dst
 		val pos = movementInfo.src
 		val board = movementInfo.chessBoard
-		if (!board.dimension.isInBounds(dest) || pos.equals(dest)) {
-			return super.canMove(movementInfo)
-		}
 		if (dest.y == pos.y && dest.x != pos.x) {
 			if (!isBlockedByPiece(board, pos, dest)) {
 				return true

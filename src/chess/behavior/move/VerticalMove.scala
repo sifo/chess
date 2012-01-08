@@ -9,9 +9,6 @@ trait VerticalMove extends MoveBehavior {
 		val dest = movementInfo.dst
 		val pos = movementInfo.src
 		val board = movementInfo.chessBoard
-		if (!board.dimension.isInBounds(dest) || pos.equals(dest)) {
-			return super.canMove(movementInfo)
-		}
 		if (dest.x == pos.x && dest.y != pos.y) {
 			if (!isBlockedByPiece(board, pos, dest)) {
 				return true

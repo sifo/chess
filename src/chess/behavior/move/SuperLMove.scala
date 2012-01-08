@@ -5,10 +5,6 @@ import chess.entity.MovementInfo
 trait SuperLMove extends MoveBehavior {
 
 	override def canMove(mvtInfo: MovementInfo): Boolean = {
-		if (!mvtInfo.chessBoard.dimension.isInBounds(mvtInfo.dst)
-			|| mvtInfo.src.equals(mvtInfo.dst)) {
-			return super.canMove(mvtInfo)
-		}
 		val pos = mvtInfo.src
 		val dest = mvtInfo.dst
 		val deltaX = Math.abs(pos.x - dest.x)
