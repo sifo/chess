@@ -28,7 +28,21 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
   }
 
   def drawBoard(event: MoveEvent): Unit = {
-
+		  localBoard(event.dst.x)(event.dst.y) = localBoard(event.src.x)(event.src.y);
+		  
+		  if (event.src.x % 2 == 0) {
+            if (event.src.y % 2 == 0)
+              localBoard(event.src.x)(event.src.y) = "B";
+            else
+              localBoard(event.src.x)(event.src.y) = "W";
+          } else {
+            if (event.src.y % 2 == 0)
+              localBoard(event.src.x)(event.src.y) = "W";
+            else
+              localBoard(event.src.x)(event.src.y) = "B";
+          }
+		  
+		  display();
   }
 
   def drawBoard(event: DrawBoardEvent): Unit = {
