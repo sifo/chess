@@ -53,14 +53,14 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
         if (localBoard(i)(j) == "") {
           if (i % 2 == 0) {
             if (j % 2 == 0)
-              localBoard(i)(j) = "B";
+              localBoard(i)(j) = "@";
             else
-              localBoard(i)(j) = "W";
+              localBoard(i)(j) = "Ø";
           } else {
             if (j % 2 == 0)
-              localBoard(i)(j) = "W";
+              localBoard(i)(j) = "Ø";
             else
-              localBoard(i)(j) = "B";
+              localBoard(i)(j) = "@";
           }
         }
       }
@@ -75,63 +75,15 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
   }
 
   def placePieceOnTile(event: PlacePieceOnBoardEvent): Unit = {
-    //Pas propre, il vaudrait mieux avoir dans Piece un champ
-    //contenant une chaine de caracteres la representant. Un simple
-    //test sur la couleur suffirait, et on n'aurait pas besoin d'utiliser
-    //isInstanceOf
 
     localBoard(event.position.x)(event.position.y) = {
-      if (event.actualPiece.isInstanceOf[Bishop]) {
-        if (event.actualPiece.color == Color.Black) {
+              if (event.actualPiece.color == Color.Black) {
           //Ceci est à corriger selon l'implémentation de Color
           //pour différencier sur l'affichage les pièces noires et blanches
-          "I";
+          event.actualPiece.significantLetter().toUpperCase();
         } else {
-          "i";
+          event.actualPiece.significantLetter().toLowerCase();
         }
-      } else if (event.actualPiece.isInstanceOf[Knight]) {
-        if (event.actualPiece.color == Color.Black) {
-          //Ceci est à corriger selon l'implémentation de Color
-          //pour différencier sur l'affichage les pièces noires et blanches
-          "G";
-        } else {
-          "g";
-        }
-      } else if (event.actualPiece.isInstanceOf[King]) {
-        if (event.actualPiece.color == Color.Black) {
-          //Ceci est à corriger selon l'implémentation de Color
-          //pour différencier sur l'affichage les pièces noires et blanches
-          "K";
-        } else {
-          "k";
-        }
-      } else if (event.actualPiece.isInstanceOf[Pawn]) {
-        if (event.actualPiece.color == Color.Black) {
-          //Ceci est à corriger selon l'implémentation de Color
-          //pour différencier sur l'affichage les pièces noires et blanches
-          "P";
-        } else {
-          "p";
-        }
-      } else if (event.actualPiece.isInstanceOf[Queen]) {
-        if (event.actualPiece.color == Color.Black) {
-          //Ceci est à corriger selon l'implémentation de Color
-          //pour différencier sur l'affichage les pièces noires et blanches
-          "Q";
-        } else {
-          "q";
-        }
-      } else if (event.actualPiece.isInstanceOf[Rook]) {
-        if (event.actualPiece.color == Color.Black) {
-          //Ceci est à corriger selon l'implémentation de Color
-          //pour différencier sur l'affichage les pièces noires et blanches
-          "R";
-        } else {
-          "r";
-        }
-      } else {
-        localBoard(event.position.x)(event.position.y)
-      }
     }
   }
 }

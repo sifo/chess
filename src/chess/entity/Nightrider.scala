@@ -7,4 +7,6 @@ import chess.behavior.promote.NoWayPromote
 class Nightrider extends Piece {
 	moveBehavior = new MoveBehavior with SuperLMove
 	promoteBehavior = new PromoteBehavior with NoWayPromote
+	
+	override def name() = "Nightrider";
 }

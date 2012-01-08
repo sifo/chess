@@ -7,4 +7,6 @@ import chess.behavior.move.MoveBehavior
 class Pawn extends Piece {
 	moveBehavior = new MoveBehavior with SimpleMove
 	promoteBehavior = new PromoteBehavior with StandardPromote
+	
+	override def name() = "Pawn";
 }

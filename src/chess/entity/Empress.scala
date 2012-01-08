@@ -9,4 +9,6 @@ import chess.behavior.move.LMove
 class Empress extends Piece{
 	moveBehavior = new MoveBehavior with HorizontalMove with VerticalMove with LMove
 	promoteBehavior = new PromoteBehavior with NoWayPromote
+	
+	override def name() = "Empress";
 }

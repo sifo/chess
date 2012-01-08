@@ -24,4 +24,8 @@ abstract class Piece {
 	def canPromote(movementInfo: MovementInfo): Boolean = {
 	  promoteBehavior.canPromote(movementInfo)
 	}
+	
+	def name() : String;
+	
+	def significantLetter() : String = name().substring(0,1);
 }

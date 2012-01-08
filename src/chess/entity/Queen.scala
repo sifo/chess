@@ -8,6 +8,8 @@ import chess.behavior.move.VerticalMove
 import chess.behavior.move.DiagonalMove
 
 class Queen extends Piece {
-	moveBehavior = new MoveBehavior with HorizontalMove with VerticalMove with DiagonalMove
-	promoteBehavior = new PromoteBehavior with NoWayPromote
+  moveBehavior = new MoveBehavior with HorizontalMove with VerticalMove with DiagonalMove
+  promoteBehavior = new PromoteBehavior with NoWayPromote
+
+  override def name() = "Queen";
 }

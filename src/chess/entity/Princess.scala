@@ -6,6 +6,8 @@ import chess.behavior.move.LMove
 import chess.behavior.move.DiagonalMove
 
 class Princess extends Piece {
-	moveBehavior = new MoveBehavior with LMove with DiagonalMove
-	promoteBehavior = new PromoteBehavior with NoWayPromote
+  moveBehavior = new MoveBehavior with LMove with DiagonalMove
+  promoteBehavior = new PromoteBehavior with NoWayPromote
+
+  override def name() = "Princess";
 }

@@ -7,4 +7,7 @@ import chess.behavior.promote.NoWayPromote
 class Knight extends Piece {
 	moveBehavior = new MoveBehavior with LMove
 	promoteBehavior = new PromoteBehavior with NoWayPromote
+	
+	override def name() = "Knight";
+	override def significantLetter() = "H";
 }

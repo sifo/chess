@@ -10,4 +10,6 @@ class Grasshopper extends Piece {
 	moveBehavior = new MoveBehavior 
 			with HorizontalLeapMove with VerticalLeapMove with DiagonalLeapMove
 	promoteBehavior = new PromoteBehavior with NoWayPromote
+	
+	override def name() = "Grasshopper";
 }
