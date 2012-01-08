@@ -20,6 +20,10 @@ object PlayerManager {
 		playerNumber match {
 			case 0 => color = White
 			case 1 => color = Black
+			case 2 => color = Red
+			case 3 => color = Blue
+			case 4 => color = Yellow
+			case 5 => color = Green
 		}
 		return color
 	}
@@ -29,6 +33,10 @@ object PlayerManager {
 		color match {
 			case White => index = 0
 			case Black => index = 1
+			case Red => index = 2
+			case Blue => index = 3
+			case Yellow => index = 4
+			case Green => index = 5
 		}
 		return index
 	}

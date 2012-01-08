@@ -47,6 +47,7 @@ object BoardManager {
 class BoardManager(val chessModel: ChessModel) {
 	var board: ChessBoard = _
 	var history: ChessHistory = _
+	var piecesTaken = List[Piece]()
 	loadConfig(chessModel.config)
 
 	def loadConfig(configFile: String) {
@@ -83,6 +84,7 @@ class BoardManager(val chessModel: ChessModel) {
 					var action = new Action(piece.position, pos, piece)
 					history.addAction(action)
 					board.squares(pos.x)(pos.y) = piece
+					piecesTaken = board.squares(piece.position.x)(piece.position.y) :: piecesTaken 
 					board.squares(piece.position.x)(piece.position.y) = null
 					piece.position = new Position(pos.x, pos.y)
 					chessModel.playerManager.setNextPlayer
