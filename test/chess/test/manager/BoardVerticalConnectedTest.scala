@@ -55,7 +55,7 @@ class BoardVerticalConnectedTest extends Spec with BeforeAndAfter {
 	 *    a b c d e f g h 
 	 */
 	
-	describe("BoardManagerHorizontalConnected") {
+	describe("BoardManagerVerticalConnected") {
 
 		it("should accept bishop move horizontaly") {
 			assert(boardManager.canMove(new Position(0, 0), bishop))

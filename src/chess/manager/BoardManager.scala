@@ -104,11 +104,23 @@ class BoardManager(val chessModel: ChessModel) {
 				if (pieceDst == null || (pieceDst != null && piece.color != pieceDst.color)) {
 					if (isHorizontalConnected) {
 						mvtInfo = adaptMovementInfoForHorizontalBoard(mvtInfo)
+						val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+						mvtInfo.dst = dst
 						if(piece.canMove(mvtInfo)) return true
-						mvtInfo.dst.x = mvtInfo.dst.x - board.dimension.width
+						dst.x = dst.x - board.dimension.width
 						if(piece.canMove(mvtInfo)) return true
-						mvtInfo.dst.x = mvtInfo.dst.x + 2 * board.dimension.width
+						dst.x = dst.x + 2 * board.dimension.width
 						if(piece.canMove(mvtInfo)) return true
+					} else if(isVerticalConnected) {
+						mvtInfo = adaptMovementInfoForVerticalBoard(mvtInfo)
+						val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+						mvtInfo.dst = dst
+						if(piece.canMove(mvtInfo)) return true
+						dst.y = dst.y - board.dimension.height
+						if(piece.canMove(mvtInfo)) return true
+						dst.y = dst.y + 2 * board.dimension.height
+						if(piece.canMove(mvtInfo)) return true
+					
 					} else if (piece.canMove(mvtInfo)) {
 						return true
 					}
@@ -133,6 +145,27 @@ class BoardManager(val chessModel: ChessModel) {
 		positionH.x = positionH.x + board.dimension.width
 		val destH = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
 		destH.x = destH.x + board.dimension.width
+		val pieceH = mvtInfo.piece
+		//		pieceH.position = positionH // attention effet de bord grave
+
+		return new MovementInfo(positionH, destH, pieceH, boardH, history)
+	}
+	
+	def adaptMovementInfoForVerticalBoard(mvtInfo: MovementInfo): MovementInfo = {
+		val dimension = new Dimension(board.dimension.width, board.dimension.height * 3)
+		val boardH = new ChessBoard(dimension)
+		for (x <- 0 to board.dimension.width - 1) {
+			for (y <- 0 to board.dimension.height - 1) {
+				boardH.squares(x)(y) = board.squares(x)(y)
+				boardH.squares(x)(y + board.dimension.height) = board.squares(x)(y)
+				boardH.squares(x)(y + board.dimension.height * 2) = board.squares(x)(y)
+			}
+		}
+
+		val positionH = new Position(mvtInfo.piece.position.x, mvtInfo.piece.position.y)
+		positionH.y = positionH.y + board.dimension.height
+		val destH = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+		destH.y = destH.y + board.dimension.height
 		val pieceH = mvtInfo.piece
 		//		pieceH.position = positionH // attention effet de bord grave
 
