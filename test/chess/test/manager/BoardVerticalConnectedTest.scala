@@ -76,7 +76,7 @@ class BoardVerticalConnectedTest extends Spec with BeforeAndAfter {
 			assert(boardManager.canMove(new Position(7, 5), bishop))
 		}
 
-		it("should accept knight move horizontaly") {
+		it("should accept knight classic move") {
 			assert(boardManager.canMove(new Position(4, 1), knight))
 			assert(boardManager.canMove(new Position(5, 2), knight))
 			assert(boardManager.canMove(new Position(7, 2), knight))
