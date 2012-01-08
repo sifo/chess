@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<chess-config>
+	<three-dimensional-board enabled='false' />
+	<horizontal-connected-board enabled='false' />
+	<vertical-connected-board enabled='false' />
+	<board-dimension width='14' length='14' />
+	<player-config>
+		<player-count value='4' />
+		<player-direction direction='north' player='0' />
+		<player-direction direction='south' player='1' />
+		<player-direction direction='east' player='2' />
+		<player-direction direction='west' player='3' />
+	</player-config>
+	<board-pieces>
+		<piece-setup x='3' y='0' player='0' piece='rook' />
+		<piece-setup x='4' y='0' player='0' piece='knight' />
+		<piece-setup x='5' y='0' player='0' piece='bishop' />
+		<piece-setup x='6' y='0' player='0' piece='queen' />
+		<piece-setup x='7' y='0' player='0' piece='king' />
+		<piece-setup x='8' y='0' player='0' piece='bishop' />
+		<piece-setup x='9' y='0' player='0' piece='knight' />
+		<piece-setup x='10' y='0' player='0' piece='rook' />
+		<piece-setup x='3' y='1' player='0' piece='pawn' />
+		<piece-setup x='4' y='1' player='0' piece='pawn' />
+		<piece-setup x='5' y='1' player='0' piece='pawn' />
+		<piece-setup x='6' y='1' player='0' piece='pawn' />
+		<piece-setup x='7' y='1' player='0' piece='pawn' />
+		<piece-setup x='8' y='1' player='0' piece='pawn' />
+		<piece-setup x='9' y='1' player='0' piece='pawn' />
+		<piece-setup x='10' y='1' player='0' piece='pawn' />
+		
+		<piece-setup x='3' y='13' player='1' piece='rook' />
+		<piece-setup x='4' y='13' player='1' piece='knight' />
+		<piece-setup x='5' y='13' player='1' piece='bishop' />
+		<piece-setup x='6' y='13' player='1' piece='queen' />
+		<piece-setup x='7' y='13' player='1' piece='king' />
+		<piece-setup x='8' y='13' player='1' piece='bishop' />
+		<piece-setup x='9' y='13' player='1' piece='knight' />
+		<piece-setup x='10' y='13' player='1' piece='rook' />
+		<piece-setup x='3' y='12' player='1' piece='pawn' />
+		<piece-setup x='4' y='12' player='1' piece='pawn' />
+		<piece-setup x='5' y='12' player='1' piece='pawn' />
+		<piece-setup x='6' y='12' player='1' piece='pawn' />
+		<piece-setup x='7' y='12' player='1' piece='pawn' />
+		<piece-setup x='8' y='12' player='1' piece='pawn' />
+		<piece-setup x='9' y='12' player='1' piece='pawn' />
+		<piece-setup x='10' y='12' player='1' piece='pawn' />
+		
+		
+		<piece-setup x='0' y='10' player='2' piece='rook' />
+		<piece-setup x='0' y='9' player='2' piece='knight' />
+		<piece-setup x='0' y='8' player='2' piece='bishop' />
+		<piece-setup x='0' y='7' player='2' piece='queen' />
+		<piece-setup x='0' y='6' player='2' piece='king' />
+		<piece-setup x='0' y='5' player='2' piece='bishop' />
+		<piece-setup x='0' y='4' player='2' piece='knight' />
+		<piece-setup x='0' y='3' player='2' piece='rook' />
+		<piece-setup x='1' y='10' player='2' piece='pawn' />
+		<piece-setup x='1' y='9' player='2' piece='pawn' />
+		<piece-setup x='1' y='8' player='2' piece='pawn' />
+		<piece-setup x='1' y='7' player='2' piece='pawn' />
+		<piece-setup x='1' y='6' player='2' piece='pawn' />
+		<piece-setup x='1' y='5' player='2' piece='pawn' />
+		<piece-setup x='1' y='4' player='2' piece='pawn' />
+		<piece-setup x='1' y='3' player='2' piece='pawn' />
+		
+		<piece-setup x='13' y='7' player='3' piece='rook' />
+		<piece-setup x='13' y='7' player='3' piece='knight' />
+		<piece-setup x='13' y='7' player='3' piece='bishop' />
+		<piece-setup x='13' y='7' player='3' piece='queen' />
+		<piece-setup x='13' y='7' player='3' piece='king' />
+		<piece-setup x='13' y='7' player='3' piece='bishop' />
+		<piece-setup x='13' y='7' player='3' piece='knight' />
+		<piece-setup x='13' y='7' player='3' piece='rook' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+		<piece-setup x='12' y='6' player='3' piece='pawn' />
+	</board-pieces>
+	<board-obstacles>
+<!-- 		<position x='3' y='3' /> -->
+	</board-obstacles>
+</chess-config>
