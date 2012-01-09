@@ -97,13 +97,13 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
     if (pattern.matches()) {
       new MoveEvent(
         new Position(
-          pattern.group(1).toUpperCase().charAt(0).toInt - 41,
+          pattern.group(1).toUpperCase().charAt(0).toInt - 65,
           pattern.group(2).toInt - 1),
         new Position(
-          pattern.group(3).toUpperCase().charAt(0).toInt - 41,
+          pattern.group(3).toUpperCase().charAt(0).toInt - 65,
           pattern.group(4).toInt - 1));
     } else {
-    	null
+      null
     }
   }
 }
