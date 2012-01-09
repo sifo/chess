@@ -7,7 +7,8 @@ import chess.history.Action
 import scala.xml.XML
 
 trait SimpleMove extends MoveBehavior {
-
+	var lastMvt: Action = _
+	
 	private def getDirection(configFile: String, posit_x: Int, posit_y: Int): String = {
 		val config = XML.loadFile(configFile)
 		for (val entry <- config \\ "board-pieces" \ "piece-setup") {
@@ -28,14 +29,13 @@ trait SimpleMove extends MoveBehavior {
 	  var output = Array.fill[Int](mvtInfo.chessBoard.dimension.height, mvtInfo.chessBoard.dimension.width)(0);
 	  val src = mvtInfo.src
 	  val direction = getDirection("res/standard-chess-config.xml", src.x, src.y)
-	  var lastMvt= new Action(null, null, null)
 	  lastMvt = mvtInfo.history.getLastAction()
-	  // val color  = mvtInfo.piece.color
+	  //lastMvt = new Action(null, null, null)
 	  
-	  if ((src.y + 1 < mvtInfo.chessBoard.dimension.width) && (direction == "north")) //(color == White))
+	  if ((src.y + 1 < mvtInfo.chessBoard.dimension.width) && (direction == "north"))
 	    output(src.x)(src.y + 1) = 1
 	    
-	  if ((src.y - 1 >= 0) && (direction == "south")) // (color == Black))
+	  if ((src.y - 1 >= 0) && (direction == "south"))
 	    output(src.x)(src.y - 1) = 1
 	  
 	  if ((src.y == 1) && (direction == "north"))
