@@ -29,6 +29,10 @@ class ChessModel(var config: String) extends Game {
 		
 	}
 	
+	def fireImpossibleMovement() : Unit = {
+		
+	}
+	
 	def fireChangeCurrentPlayer() : Unit = {
 		
 	}
