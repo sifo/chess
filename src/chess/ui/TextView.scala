@@ -28,6 +28,7 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
     }
     println("");
   }
+
   def close() {
     exit(0);
   }
@@ -103,7 +104,10 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
           pattern.group(3).toUpperCase().charAt(0).toInt - 65,
           pattern.group(4).toInt - 1));
     } else {
-      null
+      if ("exit".equals(input)) {
+        close();
+      }
+      null;
     }
   }
 }
