@@ -46,6 +46,8 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
   }
 
   def drawBoard(event: DrawBoardEvent): Unit = {
+    println("----------------------------------Called");
+    
     localBoard = Array.fill[String](event.dimension.height, event.dimension.width)("");
 
     for (i <- 0 until event.dimension.height) {
