@@ -1,8 +1,10 @@
 package chess
 import chess.ui.TextView
+import chess.ui.events.DrawBoardEvent
 
 class ChessController(var chessModel : ChessModel) {
-	val view = new TextView(this)
+	var view = new TextView(this)
+	view.drawBoard(new DrawBoardEvent(chessModel.boardManager.board.dimension));
 	
 	def addListenersToModel()= chessModel.addChessListener(view)
 	
