@@ -8,6 +8,8 @@ import chess.ui.events.TellCantMovePieceEvent
 import chess.ui.events.PlacePieceOnBoardEvent
 import chess.ui.events.DrawBoardEvent
 import chess.entity._
+import java.util.regex.Pattern
+import chess.ui.events.MoveEvent
 
 class TextView(chessController: ChessController) extends ChessView(chessController) {
   var outputIndicator = ">";
@@ -45,7 +47,7 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
         localBoard(event.src.x)(event.src.y) = "@ ";
     }
 
-   // display();
+    // display();
   }
 
   def drawBoard(event: DrawBoardEvent): Unit = {
@@ -89,8 +91,19 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
       }
     }
   }
-  
-  def processUserInput(input : String) = {
-    
+
+  def processUserInput(input: String): MoveEvent = {
+    var pattern = Pattern.compile("([A-Z]|[a-z])(\\d)([A-Z]|[a-z])(\\d)").matcher(input);
+    if (pattern.matches()) {
+      new MoveEvent(
+        new Position(
+          pattern.group(1).toUpperCase().charAt(0).toInt - 41,
+          pattern.group(2).toInt - 1),
+        new Position(
+          pattern.group(3).toUpperCase().charAt(0).toInt - 41,
+          pattern.group(4).toInt - 1));
+    } else {
+    	null
+    }
   }
 }
