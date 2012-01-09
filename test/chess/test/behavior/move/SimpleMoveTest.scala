@@ -40,26 +40,30 @@ class SimpleMoveTest extends Spec with BeforeAndAfter {
 		
 		it("should reject move on the same position") {
 			dst = new Position(4, 1)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			chessHistory = new ChessHistory
+			mvtInfo = new MovementInfo(src, dst, null, chessBoard, chessHistory)
 			assert(!movement.canMove(mvtInfo))
 		}
 		
 		it("should reject move more than one square (outside the second column)") {
 			dst = new Position(4, 4)
-			mvtInfo = new MovementInfo(src_2, dst, null, chessBoard, null)
+			chessHistory = new ChessHistory
+			mvtInfo = new MovementInfo(src_2, dst, null, chessBoard, chessHistory)
 			assert(!movement.canMove(mvtInfo))
 		}
 		
 		
 		it("should accept simple move") {
 			dst = new Position(4, 2)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			chessHistory = new ChessHistory
+			mvtInfo = new MovementInfo(src, dst, null, chessBoard, chessHistory)
 			assert(movement.canMove(mvtInfo))
 		}
 		
 		it("should accept move more than one square (inside the second column)") {
 			dst = new Position(4, 3)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			chessHistory = new ChessHistory
+			mvtInfo = new MovementInfo(src, dst, null, chessBoard, chessHistory)
 			assert(movement.canMove(mvtInfo))
 		}
 		
@@ -70,7 +74,7 @@ class SimpleMoveTest extends Spec with BeforeAndAfter {
 			chessHistory.addAction(action)
 			dst = new Position(5, 5)
 			
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src_3, dst, pawn, chessBoard, chessHistory)
 			assert(movement.canMove(mvtInfo))
 		}
 	}
