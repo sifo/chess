@@ -70,6 +70,13 @@ class PlayerManager(val chessModel: ChessModel) {
 			currentPlayerIndex += 1
 		chessModel.fireChangeCurrentPlayer
 	}
+	
+	def getNextPlayer(): Int = {
+		if (currentPlayerIndex == players.size - 1)
+			return 0
+		else
+			return currentPlayerIndex + 1
+	}
 
 	def isPlayerTurn(piece: Piece): Boolean = {
 		var index = PlayerManager.playerColorToNumber(piece.color)
