@@ -1,4 +1,5 @@
 package chess.ui
+import scala.util.matching.Regex
 import chess.ChessListener
 import chess.ChessView
 import chess.ChessController
@@ -87,5 +88,9 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
         event.actualPiece.significantLetter().toLowerCase();
       }
     }
+  }
+  
+  def processUserInput(input : String) = {
+    
   }
 }
