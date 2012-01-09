@@ -85,16 +85,28 @@ class BoardManager(val chessModel: ChessModel) {
 	}
 
 	def move(dest: Position, piece: Piece) {
-		if (canMove(dest, piece)) {
-			var action = new Action(piece.position, dest, piece)
-			history.addAction(action)
-			if(board.squares(dest.x)(dest.y) != null) {
-				piecesTaken = board.squares(dest.x)(dest.y) :: piecesTaken
-			}
+		if (canMove(dest, piece) && chessModel.playerManager.isPlayerTurn(piece)) {
+			val pieceTaken = board.squares(dest.x)(dest.y)
+			val oldPos = piece.position
 			board.squares(dest.x)(dest.y) = piece
 			board.squares(piece.position.x)(piece.position.y) = null
 			piece.position = new Position(dest.x, dest.y)
-			isCheck = isCheckSituation()
+			if (isCheck) {
+				if (isCheckSituation(chessModel.playerManager.currentPlayerIndex)) {
+					board.squares(dest.x)(dest.y) = pieceTaken
+					board.squares(oldPos.x)(oldPos.y) = piece
+					piece.position = oldPos
+					chessModel.fireImpossibleMovement()
+					return
+				}
+				isCheck = false
+			}
+			if (pieceTaken != null) {
+				piecesTaken = pieceTaken :: piecesTaken
+			}
+			var action = new Action(oldPos, dest, piece)
+			history.addAction(action)
+			isCheck = isCheckSituation(chessModel.playerManager.getNextPlayer())
 			chessModel.playerManager.setNextPlayer
 		}
 	}
@@ -105,33 +117,30 @@ class BoardManager(val chessModel: ChessModel) {
 			|| mvtInfo.src.equals(dest)) {
 			return false
 		}
-		if (chessModel.playerManager.isPlayerTurn(piece)) {
-			if (board.dimension.isInBounds(dest)) {
-				val pieceDst = board.squares(dest.x)(dest.y)
-				if (pieceDst == null || (pieceDst != null && piece.color != pieceDst.color)) {
-					if (isHorizontalConnected) {
-						mvtInfo = adaptMovementInfoForHorizontalBoard(mvtInfo)
-						val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
-						mvtInfo.dst = dst
-						if (piece.canMove(mvtInfo)) return true
-						dst.x = dst.x - board.dimension.width
-						if (piece.canMove(mvtInfo)) return true
-						dst.x = dst.x + 2 * board.dimension.width
-						if (piece.canMove(mvtInfo)) return true
-					} else if (isVerticalConnected) {
-						mvtInfo = adaptMovementInfoForVerticalBoard(mvtInfo)
-						val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
-						mvtInfo.dst = dst
-						if (piece.canMove(mvtInfo)) return true
-						dst.y = dst.y - board.dimension.height
-						if (piece.canMove(mvtInfo)) return true
-						dst.y = dst.y + 2 * board.dimension.height
-						if (piece.canMove(mvtInfo)) return true
+		val pieceDst = board.squares(dest.x)(dest.y)
+		if (pieceDst == null || (pieceDst != null && piece.color != pieceDst.color)) {
+			if (isHorizontalConnected) {
+				mvtInfo = adaptMovementInfoForHorizontalBoard(mvtInfo)
+				val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+				mvtInfo.dst = dst
+				if (piece.canMove(mvtInfo)) return true
+				dst.x = dst.x - board.dimension.width
+				if (piece.canMove(mvtInfo)) return true
+				dst.x = dst.x + 2 * board.dimension.width
+				if (piece.canMove(mvtInfo)) return true
+			} else if (isVerticalConnected) {
+				mvtInfo = adaptMovementInfoForVerticalBoard(mvtInfo)
+				val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+				mvtInfo.dst = dst
+				if (piece.canMove(mvtInfo)) return true
+				dst.y = dst.y - board.dimension.height
+				if (piece.canMove(mvtInfo)) return true
+				dst.y = dst.y + 2 * board.dimension.height
+				if (piece.canMove(mvtInfo)) return true
 
-					} else if (piece.canMove(mvtInfo)) {
-						return true
-					}
-				}
+			} else if (piece.canMove(mvtInfo)) {
+				val i = 0
+				return true
 			}
 		}
 		return false
@@ -142,9 +151,10 @@ class BoardManager(val chessModel: ChessModel) {
 		val boardH = new ChessBoard(dimension)
 		for (x <- 0 to board.dimension.width - 1) {
 			for (y <- 0 to board.dimension.height - 1) {
-				boardH.squares(x)(y) = board.squares(x)(y)
-				boardH.squares(x + board.dimension.width)(y) = board.squares(x)(y)
-				boardH.squares(x + board.dimension.width * 2)(y) = board.squares(x)(y)
+				val piece = board.squares(x)(y)
+				boardH.squares(x)(y) = piece
+				boardH.squares(x + board.dimension.width)(y) = piece
+				boardH.squares(x + board.dimension.width * 2)(y) = piece
 			}
 		}
 
@@ -163,9 +173,10 @@ class BoardManager(val chessModel: ChessModel) {
 		val boardH = new ChessBoard(dimension)
 		for (x <- 0 to board.dimension.width - 1) {
 			for (y <- 0 to board.dimension.height - 1) {
-				boardH.squares(x)(y) = board.squares(x)(y)
-				boardH.squares(x)(y + board.dimension.height) = board.squares(x)(y)
-				boardH.squares(x)(y + board.dimension.height * 2) = board.squares(x)(y)
+				val piece = board.squares(x)(y)
+				boardH.squares(x)(y) = piece
+				boardH.squares(x)(y + board.dimension.height) = piece
+				boardH.squares(x)(y + board.dimension.height * 2) = piece
 			}
 		}
 
@@ -179,29 +190,27 @@ class BoardManager(val chessModel: ChessModel) {
 		return new MovementInfo(positionH, destH, pieceH, boardH, history)
 	}
 
-	def isCheckSituation(): Boolean = {
+	def isCheckSituation(playerIndex: Int): Boolean = {
 		var res = false
-		//parcourir toutes les pièces sauf les rois et regarder si elles peuvent
-		//attaquer le roi qui du joueur qui a le trait
 
-		// le roi qui le trait
-		val king = kingOfCurrentPlayerToPlay()
-		for(p <- pieces) {
-			if(!p.isInstanceOf[King])
-				if(canMove(king.position, p)) {
+		// le roi du joueur au trait
+		val king = kingOfPlayer(playerIndex)
+		for (p <- pieces) {
+			if (!p.isInstanceOf[King])
+				if (canMove(king.position, p)) {
 					return true
-				}	
+				}
 		}
 
 		return false
 	}
 
-	def kingOfCurrentPlayerToPlay(): Piece = {
+	def kingOfPlayer(playerIndex: Int): Piece = {
 		var res = null
 		for (p <- pieces) {
 			if (p.isInstanceOf[King]) {
 				val n = PlayerManager.playerColorToNumber(p.color)
-				if (n == chessModel.playerManager.getNextPlayer)
+				if (n == playerIndex)
 					return p
 			}
 		}
