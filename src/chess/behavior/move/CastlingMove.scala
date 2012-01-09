@@ -1,11 +1,12 @@
 package chess.behavior.move;
+import scala.xml.XML
 import chess.entity.Position
 import chess.entity.MovementInfo
 import chess.entity.Color._
 import chess.history.ChessHistory
 
 trait CastlingMove extends MoveBehavior {
-		
+  
 	override def canMove(mvtInfo: MovementInfo): Boolean = {
 	  val src    = mvtInfo.src
 	  val dst    = mvtInfo.dst
