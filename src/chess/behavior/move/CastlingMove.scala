@@ -15,10 +15,10 @@ trait CastlingMove extends MoveBehavior {
 	    if ((src.x == 4) && (src.y == 0)) {
 	      // Petit Roque
 	      if((dst.x == 6) && (dst.y == 0) && mvtInfo.history.getrookRWhiteStat)
-	        true
+	        return true
 	      // Grand Roque
 	      else if ((dst.x == 2) && (dst.y == 0) && mvtInfo.history.getrookLWhiteStat)
-	        true
+	        return true
 	    }
 	  }
 	  
@@ -26,13 +26,13 @@ trait CastlingMove extends MoveBehavior {
 	    if ((src.x == 4) && (src.y == 7)) {
 	      // Petit Roque
 	      if((dst.x == 6) && (dst.y == 7) && mvtInfo.history.getrookRBlackStat)
-	        true
+	        return true
 	      // Grand Roque
 	      else if ((dst.x == 2) && (dst.y == 7) && mvtInfo.history.getrookLBlackStat)
-	        true
+	        return true
 	    }
 	  }
 	  
-	  false
+	  return super.canMove(mvtInfo)
 	}
 }
