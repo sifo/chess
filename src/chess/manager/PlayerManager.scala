@@ -68,7 +68,20 @@ class PlayerManager(val chessModel: ChessModel) {
 			currentPlayerIndex = 0
 		else
 			currentPlayerIndex += 1
-		chessModel.fireChangeCurrentPlayer
+	}
+	
+	def setPreviousPlayer(): Unit = {
+		if (currentPlayerIndex == 0)
+			currentPlayerIndex = players.size - 1
+		else
+			currentPlayerIndex -= 1
+	}
+	
+	def getPreviousPlayer(): Int = {
+		if (currentPlayerIndex == 0)
+			return players.size - 1
+		else
+			return currentPlayerIndex - 1
 	}
 	
 	def getNextPlayer(): Int = {
