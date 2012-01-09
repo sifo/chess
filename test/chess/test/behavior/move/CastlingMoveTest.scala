@@ -9,7 +9,7 @@ import chess.entity.ChessBoard
 import chess.entity.MovementInfo
 import chess.entity.Position
 import chess.entity.Dimension
-import chess.entity.Piece
+import chess.entity.King
 import chess.entity.Color._
 import chess.history.ChessHistory
 
@@ -22,7 +22,7 @@ class CastlingMoveTest extends Spec with BeforeAndAfter {
 	var dst: Position = _
 	var mvtInfo: MovementInfo = _
 	var chessHistory : ChessHistory = _
-	var piece : Piece = _
+	var king : King = _
 
 	before {
 		movement = new MoveBehavior with CastlingMove
@@ -34,51 +34,51 @@ class CastlingMoveTest extends Spec with BeforeAndAfter {
 		
 		it("should refuse if king moved already") {
 			chessHistory = new ChessHistory
-			chessHistory.kingWhiteInit = false
+			chessHistory.setKingWhiteStat(false)
 			dst = new Position(6, 0)
-			piece = new Piece ; piece.color = White 
+			king = new King ; king.color = White 
 			
-			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, king, chessBoard, chessHistory)
 			assert(!movement.canMove(mvtInfo))
 		}
 		
 		it("should refuse small Castling if right rook moved already") {
 			chessHistory = new ChessHistory
-			chessHistory.getrookRWhiteStat = false
+			chessHistory.setRookRWhiteStat(false)
 			dst = new Position(6, 0)
-			piece = new Piece ; piece.color = White
+			king = new King ; king.color = White
 			
-			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, king, chessBoard, chessHistory)
 			assert(!movement.canMove(mvtInfo))
 		}
 		
 		it("should refuse big Castling if left rook moved already") {
 			chessHistory = new ChessHistory
-			chessHistory.getrookLWhiteStat = false
+			chessHistory.setRookLWhiteStat(false)
 			dst = new Position(2, 0)
-			piece = new Piece ; piece.color = White
+			king = new King ; king.color = White
 			
-			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, king, chessBoard, chessHistory)
 			assert(!movement.canMove(mvtInfo))
 		}
 		
 		it("should accept small Castling if rigtht rook not already moved") {
 			chessHistory = new ChessHistory
-			chessHistory.getrookLWhiteStat = false
+			chessHistory.setRookLWhiteStat(false)
 			dst = new Position(6, 0)
-			piece = new Piece ; piece.color = White
+			king = new King ; king.color = White
 			
-			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, king, chessBoard, chessHistory)
 			assert(movement.canMove(mvtInfo))
 		}
 		
 		it("should accept if left rook") {
 			chessHistory = new ChessHistory
-			chessHistory.getrookRWhiteStat = false
+			chessHistory.setRookRWhiteStat(false)
 			dst = new Position(2, 0)
-			piece = new Piece ; piece.color = White
+			king = new King ; king.color = White
 			
-			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, king, chessBoard, chessHistory)
 			assert(movement.canMove(mvtInfo))
 		}
 	}
