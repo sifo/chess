@@ -9,6 +9,7 @@ import chess.behavior.move.MoveBehavior
 import chess.entity.Position
 import chess.behavior.move.DiagonalMove
 import chess.entity.Dimension
+import chess.entity.Rook
 
 @RunWith(classOf[JUnitRunner])
 class DiagonalMoveTest extends Spec with BeforeAndAfter {
