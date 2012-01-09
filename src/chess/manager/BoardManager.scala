@@ -51,11 +51,14 @@ class BoardManager(val chessModel: ChessModel) {
 	var isHorizontalConnected: Boolean = _
 	var isVerticalConnected: Boolean = _
 	var is3DBoard: Boolean = _
+	var isCheck: Boolean = _
 	var piecesTaken = List[Piece]()
+	var pieces = List[Piece]()
 	loadConfig(chessModel.config)
 
 	def loadConfig(configFile: String) {
 		history = new ChessHistory
+		isCheck = false
 		val config = XML.loadFile(configFile)
 		is3DBoard = (config \\ "three-dimensional-board" \ "@enabled").text.toBoolean
 		isHorizontalConnected = (config \\ "horizontal-connected-board" \ "@enabled").text.toBoolean
@@ -77,6 +80,7 @@ class BoardManager(val chessModel: ChessModel) {
 			val y = (entry \ "@y").text.toInt
 			val position = new Position(x, y)
 			board.squares(x)(y) = BoardManager.buildPiece(pieceType, playerNumber, position)
+			pieces = board.squares(x)(y) :: pieces
 		}
 	}
 
@@ -84,10 +88,13 @@ class BoardManager(val chessModel: ChessModel) {
 		if (canMove(dest, piece)) {
 			var action = new Action(piece.position, dest, piece)
 			history.addAction(action)
+			if(board.squares(dest.x)(dest.y) != null) {
+				piecesTaken = board.squares(dest.x)(dest.y) :: piecesTaken
+			}
 			board.squares(dest.x)(dest.y) = piece
-			piecesTaken = board.squares(piece.position.x)(piece.position.y) :: piecesTaken
 			board.squares(piece.position.x)(piece.position.y) = null
 			piece.position = new Position(dest.x, dest.y)
+			isCheck = isCheckSituation()
 			chessModel.playerManager.setNextPlayer
 		}
 	}
@@ -106,21 +113,21 @@ class BoardManager(val chessModel: ChessModel) {
 						mvtInfo = adaptMovementInfoForHorizontalBoard(mvtInfo)
 						val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
 						mvtInfo.dst = dst
-						if(piece.canMove(mvtInfo)) return true
+						if (piece.canMove(mvtInfo)) return true
 						dst.x = dst.x - board.dimension.width
-						if(piece.canMove(mvtInfo)) return true
+						if (piece.canMove(mvtInfo)) return true
 						dst.x = dst.x + 2 * board.dimension.width
-						if(piece.canMove(mvtInfo)) return true
-					} else if(isVerticalConnected) {
+						if (piece.canMove(mvtInfo)) return true
+					} else if (isVerticalConnected) {
 						mvtInfo = adaptMovementInfoForVerticalBoard(mvtInfo)
 						val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
 						mvtInfo.dst = dst
-						if(piece.canMove(mvtInfo)) return true
+						if (piece.canMove(mvtInfo)) return true
 						dst.y = dst.y - board.dimension.height
-						if(piece.canMove(mvtInfo)) return true
+						if (piece.canMove(mvtInfo)) return true
 						dst.y = dst.y + 2 * board.dimension.height
-						if(piece.canMove(mvtInfo)) return true
-					
+						if (piece.canMove(mvtInfo)) return true
+
 					} else if (piece.canMove(mvtInfo)) {
 						return true
 					}
@@ -150,7 +157,7 @@ class BoardManager(val chessModel: ChessModel) {
 
 		return new MovementInfo(positionH, destH, pieceH, boardH, history)
 	}
-	
+
 	def adaptMovementInfoForVerticalBoard(mvtInfo: MovementInfo): MovementInfo = {
 		val dimension = new Dimension(board.dimension.width, board.dimension.height * 3)
 		val boardH = new ChessBoard(dimension)
@@ -170,5 +177,34 @@ class BoardManager(val chessModel: ChessModel) {
 		//		pieceH.position = positionH // attention effet de bord grave
 
 		return new MovementInfo(positionH, destH, pieceH, boardH, history)
+	}
+
+	def isCheckSituation(): Boolean = {
+		var res = false
+		//parcourir toutes les pièces sauf les rois et regarder si elles peuvent
+		//attaquer le roi qui du joueur qui a le trait
+
+		// le roi qui le trait
+		val king = kingOfCurrentPlayerToPlay()
+		for(p <- pieces) {
+			if(!p.isInstanceOf[King])
+				if(canMove(king.position, p)) {
+					return true
+				}	
+		}
+
+		return false
+	}
+
+	def kingOfCurrentPlayerToPlay(): Piece = {
+		var res = null
+		for (p <- pieces) {
+			if (p.isInstanceOf[King]) {
+				val n = PlayerManager.playerColorToNumber(p.color)
+				if (n == chessModel.playerManager.getNextPlayer)
+					return p
+			}
+		}
+		return res
 	}
 }
