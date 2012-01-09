@@ -43,7 +43,7 @@ class DiagonalLeapMoveTest extends Spec with BeforeAndAfter {
 			assert(true)
 		}
 
-		it("should reject if there is a piece on the way") {
+		it("should accept if there is a piece on the way") {
 			assert(true)
 		}
 	}
