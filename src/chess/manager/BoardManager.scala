@@ -91,16 +91,14 @@ class BoardManager(val chessModel: ChessModel) {
 			board.squares(dest.x)(dest.y) = piece
 			board.squares(piece.position.x)(piece.position.y) = null
 			piece.position = new Position(dest.x, dest.y)
-			if (isCheck) {
-				if (isCheckSituation(chessModel.playerManager.currentPlayerIndex)) {
-					board.squares(dest.x)(dest.y) = pieceTaken
-					board.squares(oldPos.x)(oldPos.y) = piece
-					piece.position = oldPos
-					chessModel.fireImpossibleMovement()
-					return
-				}
-				isCheck = false
+			if (isCheckSituation(chessModel.playerManager.currentPlayerIndex)) {
+				board.squares(dest.x)(dest.y) = pieceTaken
+				board.squares(oldPos.x)(oldPos.y) = piece
+				piece.position = oldPos
+				chessModel.fireImpossibleMovement()
+				return
 			}
+			isCheck = false
 			if (pieceTaken != null) {
 				piecesTaken = pieceTaken :: piecesTaken
 			}

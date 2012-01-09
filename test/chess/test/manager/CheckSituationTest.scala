@@ -99,5 +99,12 @@ class CheckSituationTest extends Spec with BeforeAndAfter {
 			assert(boardManager.board.squares(dest.x)(dest.y) == kingBlack)
 			assert(chessModel.playerManager.currentPlayerIndex == 0)
 		}
+		
+		it("should prevent player to put himself in check situation") {
+			val dest = new Position(5, 0)
+			boardManager.move(dest, kingWhite)
+			assert(boardManager.board.squares(dest.x)(dest.y) != kingWhite)
+			assert(chessModel.playerManager.currentPlayerIndex == 0)
+		}
 	}
 }
