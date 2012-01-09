@@ -20,6 +20,8 @@ class SimpleMoveTest extends Spec with BeforeAndAfter {
 	var movement: MoveBehavior = _
 	var chessBoard: ChessBoard = _
 	var src: Position = _
+	var src_2: Position = _
+	var src_3: Position = _
 	var dst: Position = _
 	var mvtInfo: MovementInfo = _
 	var chessHistory : ChessHistory = _
