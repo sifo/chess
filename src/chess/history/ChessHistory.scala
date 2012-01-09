@@ -36,6 +36,7 @@ class ChessHistory extends History {
   def getActionInternal(liste: List[Action], i: Int) : Action = (liste, i) match {
     case (a :: xs, 0) => a
     case (a :: xs, i) => getActionInternal(xs, i-1)
+    case _			  => null
   }
   
   /*
@@ -73,5 +74,9 @@ class ChessHistory extends History {
   def getrookRWhiteStat = rookRWhiteInit
   def getKingBlackStat  = kingBlackInit
   def getrookLBlackStat = rookLBlackInit
-  def getrookRBlackStat = rookRBlackInit 
+  def getrookRBlackStat = rookRBlackInit
+  
+  def setKingWhiteStat(stat: Boolean)  = kingWhiteInit  = stat // Fonctions
+  def setRookRWhiteStat(stat: Boolean) = rookRWhiteInit = stat // utlisées
+  def setRookLWhiteStat(stat: Boolean) = rookLWhiteInit = stat // dans les tests
 }
