@@ -28,8 +28,7 @@ class ChessHistory extends History {
   }
   
   def getLastInternal(liste: List[Action]) : Action = liste match {
-    case (a :: Nil) => a
-    case (a1 :: a2 :: xs) => getLastInternal(a2 :: xs)
+    case (a :: _) => a
     case _ => null
   }
   
