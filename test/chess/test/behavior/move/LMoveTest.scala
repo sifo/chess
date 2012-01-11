@@ -56,11 +56,5 @@ class LMoveTest extends Spec with BeforeAndAfter {
       mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
       assert(movement.canMove(mvtInfo));
     }
-
-    it("should accept rotated LMove") {
-      dst = new Position(3,1)
-      mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
-      assert(movement.canMove(mvtInfo));
-    }
   }
 }
