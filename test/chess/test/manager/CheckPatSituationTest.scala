@@ -46,25 +46,25 @@ class CheckPatSituationTest extends Spec with BeforeAndAfter {
 		 * 
 		 *    a b c d e f g h 
 		 */
-//		it("should see pat situation") {
-//			val kingWhite = new King()
-//			kingWhite.color = White
-//			val kingBlack = new King()
-//			kingBlack.color = Black
-//			val queenWhite = new Queen()
-//			queenWhite.color = White
-//			kingWhite.position = new Position(2, 4)
-//			queenWhite.position = new Position(1, 4)
-//			kingBlack.position = new Position(0, 7)
-//			boardManager.board.squares(2)(4) = kingWhite
-//			boardManager.board.squares(1)(4) = queenWhite
-//			boardManager.board.squares(0)(7) = kingBlack
-//			boardManager.pieces = kingWhite :: boardManager.pieces
-//			boardManager.pieces = queenWhite :: boardManager.pieces
-//			boardManager.pieces = kingBlack :: boardManager.pieces
-//			boardManager.move(new Position(1, 5), queenWhite)
-//			assert(boardManager.isPat)
-//		}
+		it("should see pat situation") {
+			val kingWhite = new King()
+			kingWhite.color = White
+			val kingBlack = new King()
+			kingBlack.color = Black
+			val queenWhite = new Queen()
+			queenWhite.color = White
+			kingWhite.position = new Position(2, 4)
+			queenWhite.position = new Position(1, 4)
+			kingBlack.position = new Position(0, 7)
+			boardManager.board.squares(2)(4) = kingWhite
+			boardManager.board.squares(1)(4) = queenWhite
+			boardManager.board.squares(0)(7) = kingBlack
+			boardManager.pieces = kingWhite :: boardManager.pieces
+			boardManager.pieces = queenWhite :: boardManager.pieces
+			boardManager.pieces = kingBlack :: boardManager.pieces
+			boardManager.move(new Position(1, 5), queenWhite)
+			assert(boardManager.isPat)
+		}
 		
 		
 		/*
