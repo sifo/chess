@@ -53,6 +53,7 @@ class BoardManager(val chessModel: ChessModel) {
 	var is3DBoard: Boolean = _
 	var isCheck: Boolean = _
 	var isCheckMate: Boolean = _
+	var isPat: Boolean = _
 	var piecesTaken = List[Piece]()
 	var pieces = List[Piece]()
 	loadConfig(chessModel.config)
@@ -61,6 +62,7 @@ class BoardManager(val chessModel: ChessModel) {
 		history = new ChessHistory
 		isCheck = false
 		isCheckMate = false
+		isPat = false
 		val config = XML.loadFile(configFile)
 		is3DBoard = (config \\ "three-dimensional-board" \ "@enabled").text.toBoolean
 		isHorizontalConnected = (config \\ "horizontal-connected-board" \ "@enabled").text.toBoolean
@@ -115,6 +117,11 @@ class BoardManager(val chessModel: ChessModel) {
 					chessModel.fireCheckMate()
 					return
 				}
+			}
+			else if (isPatSituation) {
+				isPat = true
+				chessModel.firePat()
+				return
 			}
 			chessModel.playerManager.setNextPlayer
 		}
@@ -193,7 +200,7 @@ class BoardManager(val chessModel: ChessModel) {
 	}
 
 	def isCheckSituation(playerIndex: Int): Boolean = {
-//		val attacker = chessModel.playerManager.currentPlayerIndex
+		//		val attacker = chessModel.playerManager.currentPlayerIndex
 		return canCapturePiece(kingOfPlayer(playerIndex))
 	}
 
@@ -207,11 +214,11 @@ class BoardManager(val chessModel: ChessModel) {
 		}
 		return false
 	}
-	
+
 	def canCapturePiece(attackerPlayer: Int, piece: Piece): Boolean = {
 		for (p <- pieces) {
-			if (!piecesTaken.contains(p) 
-					&& PlayerManager.playerColorToNumber(p.color) == attackerPlayer) {
+			if (!piecesTaken.contains(p)
+				&& PlayerManager.playerColorToNumber(p.color) == attackerPlayer) {
 				if (canMove(piece.position, p)) {
 					return true
 				}
@@ -245,7 +252,7 @@ class BoardManager(val chessModel: ChessModel) {
 						val pieceTaken = board.squares(dest.x)(dest.y)
 						val oldPos = p.position
 						if (possibleMoves(i)(j) == 1) {
-							if(pieceTaken != null)
+							if (pieceTaken != null)
 								piecesTaken = pieceTaken :: piecesTaken
 							board.squares(dest.x)(dest.y) = p
 							board.squares(p.position.x)(p.position.y) = null
@@ -255,7 +262,7 @@ class BoardManager(val chessModel: ChessModel) {
 								flag = true
 							}
 							board.squares(dest.x)(dest.y) = pieceTaken
-							if(pieceTaken != null)
+							if (pieceTaken != null)
 								piecesTaken = piecesTaken.tail
 							board.squares(oldPos.x)(oldPos.y) = p
 							p.position = oldPos
@@ -269,4 +276,10 @@ class BoardManager(val chessModel: ChessModel) {
 		}
 		return true
 	}
+
+	def isPatSituation(): Boolean = {
+		return isCheckMateSituation
+	}
+
+
 }

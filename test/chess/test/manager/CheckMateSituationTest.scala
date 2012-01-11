@@ -33,8 +33,7 @@ class CheckMateSituationTest extends Spec with BeforeAndAfter {
 
 		/*
 		 * k roi noir, R tour blanche, K roi blanc, Q reine blanche.
-		 * On bouge R en c2, et on regarde si le jeu repère si le roi
-		 * noir est en échec.
+		 * prochain coup : a6 a8 
 		 * 
 		 * 8  . . . . k . . .
 		 * 7  . R . . . . . . 
@@ -74,8 +73,7 @@ class CheckMateSituationTest extends Spec with BeforeAndAfter {
 
 		/*
 		 * k roi noir, R tour blanche, K roi blanc, Q reine blanche, b fou noir.
-		 * On bouge R en c2, et on regarde si le jeu repère si le roi
-		 * noir est en échec.
+		 * prochain coup : a6 a8 
 		 * 
 		 * 8  . . . . k . . .
 		 * 7  . . . . . . . R 
@@ -119,9 +117,8 @@ class CheckMateSituationTest extends Spec with BeforeAndAfter {
 		}
 
 		/*
-		 * k roi noir, R tour blanche, K roi blanc, Q reine blanche, r tour noire.
-		 * On bouge R en c2, et on regarde si le jeu repère si le roi
-		 * noir est en échec.
+		 * k roi noir, R tour blanche, K roi blanc, Q reine blanche, C cavalier blanc.
+		 * prochain coup : h7 e7 
 		 * 
 		 * 8  . . . . k . . .
 		 * 7  . . . . . . . Q 
@@ -161,8 +158,7 @@ class CheckMateSituationTest extends Spec with BeforeAndAfter {
 
 		/*
 		 * k roi noir, R tour blanche, K roi blanc, Q reine blanche, r tour noire.
-		 * On bouge R en c2, et on regarde si le jeu repère si le roi
-		 * noir est en échec.
+		 * Prochain coup : a6 a8 
 		 * 
 		 * 8  . . . . k . . .
 		 * 7  . . . . . . . R 
