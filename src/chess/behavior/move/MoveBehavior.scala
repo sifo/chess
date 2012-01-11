@@ -22,4 +22,16 @@ abstract class MoveBehavior {
    */
   def threateningMoves(movementInformation: MovementInfo): Array[Array[Int]] =
     possibleMoves(movementInformation)
+    
+  def respectPrecondition(mvtInfo: MovementInfo): Boolean = {
+	if (!mvtInfo.chessBoard.dimension.isInBounds(mvtInfo.src)
+	|| !mvtInfo.chessBoard.dimension.isInBounds(mvtInfo.dst)
+	|| mvtInfo.src.equals(mvtInfo.dst))
+		return false
+	val pieceDst = mvtInfo.chessBoard.squares(mvtInfo.dst.x)(mvtInfo.dst.y)
+	if (pieceDst != null && mvtInfo.piece.color == pieceDst.color) {
+		return false
+	}
+	return true
+  }
 }

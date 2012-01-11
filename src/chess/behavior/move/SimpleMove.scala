@@ -68,6 +68,9 @@ trait SimpleMove extends MoveBehavior {
 	}
 	
 	override def canMove(mvtInfo: MovementInfo): Boolean = {
+		if (!respectPrecondition(mvtInfo)) {
+			return false
+	    }
 		if (possibleMoves(mvtInfo)(mvtInfo.dst.x)(mvtInfo.dst.y) == 1) {
 			return true
 		}

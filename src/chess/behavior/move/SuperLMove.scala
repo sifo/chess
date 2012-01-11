@@ -5,6 +5,9 @@ import chess.entity.MovementInfo
 trait SuperLMove extends MoveBehavior {
 
 	override def canMove(mvtInfo: MovementInfo): Boolean = {
+        if (!respectPrecondition(mvtInfo)) {
+	      return false
+	    }
 		val pos = mvtInfo.src
 		val dest = mvtInfo.dst
 		val deltaX = Math.abs(pos.x - dest.x)

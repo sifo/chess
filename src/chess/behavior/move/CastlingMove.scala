@@ -10,8 +10,10 @@ trait CastlingMove extends MoveBehavior {
 	override def canMove(mvtInfo: MovementInfo): Boolean = {
 	  val src    = mvtInfo.src
 	  val dst    = mvtInfo.dst
-	  val color  = mvtInfo.piece.color
-	  
+	  val color  = mvtInfo.piece.color		
+      if (!respectPrecondition(mvtInfo)) {
+	    return false
+	  }
 	  if((color == White) && mvtInfo.history.getKingWhiteStat) {
 	    if ((src.x == 4) && (src.y == 0)) {
 	      // Petit Roque

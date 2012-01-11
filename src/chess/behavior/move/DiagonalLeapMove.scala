@@ -7,27 +7,67 @@ import chess.entity.ChessBoard
 trait DiagonalLeapMove extends MoveBehavior {
 
 	override def possibleMoves(mvtInfo: MovementInfo): Array[Array[Int]] = {
-		var output = Array.fill[Int](mvtInfo.chessBoard.dimension.height, mvtInfo.chessBoard.dimension.width)(0);
+		var output = Array.fill[Int](mvtInfo.chessBoard.dimension.width, mvtInfo.chessBoard.dimension.height)(0);
 
-		/*
-     * Fills the array with 1 where the DiagonalMove can be performed.
-     * Is the piece would move out of the board, the exception is 
-     * caught to do nothing
-     */
-		if (mvtInfo.src.x + 1 < mvtInfo.chessBoard.dimension.height
-			&& mvtInfo.src.y + 1 < mvtInfo.chessBoard.dimension.width)
-			output(mvtInfo.src.x + 1)(mvtInfo.src.y + 1) = 1;
-		if (mvtInfo.src.x + 1 < mvtInfo.chessBoard.dimension.height
-			&& mvtInfo.src.y - 1 >= 0)
-			output(mvtInfo.src.x + 1)(mvtInfo.src.y - 1) = 1;
-		if (mvtInfo.src.x - 1 >= 0
-			&& mvtInfo.src.y + 1 < mvtInfo.chessBoard.dimension.width)
-			output(mvtInfo.src.x - 1)(mvtInfo.src.y + 1) = 1;
-		if (mvtInfo.src.x - 1 >= 0
-			&& mvtInfo.src.y - 1 >= 0)
-			output(mvtInfo.src.x - 1)(mvtInfo.src.y - 1) = 1;
+		var y = mvtInfo.src.y + 1
+		var x = mvtInfo.src.x + 1
+		var continueLoop = true
+		while (continueLoop
+			&& y < mvtInfo.chessBoard.dimension.height
+			&& x < mvtInfo.chessBoard.dimension.width) {
+			val pieceDst = mvtInfo.chessBoard.squares(x)(y)			
+			if (pieceDst != null && mvtInfo.piece.color == pieceDst.color) { }
+			else if (numberOfPieceOnPath(mvtInfo.chessBoard, mvtInfo.src, new Position(x, y)) == 0)
+				output(x)(y) = 1
+			else
+				continueLoop = false
+			x += 1
+			y += 1
+		}
 
-		output;
+		continueLoop = true
+		y = mvtInfo.src.y + 1
+		x = mvtInfo.src.x - 1
+		while (continueLoop && y < mvtInfo.chessBoard.dimension.height
+			&& x >= 0) {
+			val pieceDst = mvtInfo.chessBoard.squares(x)(y)			
+			if (pieceDst != null && mvtInfo.piece.color == pieceDst.color) { }
+			else if (numberOfPieceOnPath(mvtInfo.chessBoard, mvtInfo.src, new Position(x, y)) == 0)
+				output(x)(y) = 1
+			else
+				continueLoop = false
+			x -= 1
+			y += 1
+		}
+
+		continueLoop = true
+		y = mvtInfo.src.y - 1
+		x = mvtInfo.src.x - 1
+		while (continueLoop && y >= 0 && x >= 0) {
+			val pieceDst = mvtInfo.chessBoard.squares(x)(y)			
+			if (pieceDst != null && mvtInfo.piece.color == pieceDst.color) { }
+			else if (numberOfPieceOnPath(mvtInfo.chessBoard, mvtInfo.src, new Position(x, y)) == 0)
+				output(x)(y) = 1
+			else
+				continueLoop = false
+			x -= 1
+			y -= 1
+		}
+
+		continueLoop = true
+		y = mvtInfo.src.y - 1
+		x = mvtInfo.src.x + 1
+		while (continueLoop && y >= 0 && x < mvtInfo.chessBoard.dimension.width) {
+			val pieceDst = mvtInfo.chessBoard.squares(x)(y)			
+			if (pieceDst != null && mvtInfo.piece.color == pieceDst.color) { }
+			else if (numberOfPieceOnPath(mvtInfo.chessBoard, mvtInfo.src, new Position(x, y)) == 0)
+				output(x)(y) = 1
+			else
+				continueLoop = false
+			x += 1
+			y -= 1
+		}
+		return output
 	}
 
 	private def numberOfPieceOnPath(
@@ -49,6 +89,9 @@ trait DiagonalLeapMove extends MoveBehavior {
 		val dest = mvtInfo.dst
 		val pos = mvtInfo.src
 		val board = mvtInfo.chessBoard
+		if (!respectPrecondition(mvtInfo)) {
+			return false
+		}
 		if (Math.abs(pos.x - dest.x) == Math.abs(pos.y - dest.y)) {
 			if (numberOfPieceOnPath(mvtInfo.chessBoard, pos, dest) == 1) {
 				return true
