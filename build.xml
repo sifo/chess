@@ -26,8 +26,8 @@
 	</target>
 
 	<!-- Execute program. -->
-	<target name="execute" depends="compile,test">
-		<java classname="chess.Main" classpath="bin/classes" fork="true">
+	<target name="execute" depends="compile">
+		<java classname="chess.Main" classpathref="scala.classpath" fork="true">
 		</java>
 	</target>
 
