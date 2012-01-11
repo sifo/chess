@@ -33,6 +33,10 @@ class ChessModel(var config: String) extends Game {
 		
 	}
 	
+	def fireCheckMate() : Unit = {
+		
+	}
+	
 	def fireChangeCurrentPlayer() : Unit = {
 		
 	}

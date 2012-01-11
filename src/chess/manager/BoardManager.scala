@@ -52,6 +52,7 @@ class BoardManager(val chessModel: ChessModel) {
 	var isVerticalConnected: Boolean = _
 	var is3DBoard: Boolean = _
 	var isCheck: Boolean = _
+	var isCheckMate: Boolean = _
 	var piecesTaken = List[Piece]()
 	var pieces = List[Piece]()
 	loadConfig(chessModel.config)
@@ -59,6 +60,7 @@ class BoardManager(val chessModel: ChessModel) {
 	def loadConfig(configFile: String) {
 		history = new ChessHistory
 		isCheck = false
+		isCheckMate = false
 		val config = XML.loadFile(configFile)
 		is3DBoard = (config \\ "three-dimensional-board" \ "@enabled").text.toBoolean
 		isHorizontalConnected = (config \\ "horizontal-connected-board" \ "@enabled").text.toBoolean
@@ -87,11 +89,13 @@ class BoardManager(val chessModel: ChessModel) {
 	def move(dest: Position, piece: Piece) {
 		if (canMove(dest, piece) && chessModel.playerManager.isPlayerTurn(piece)) {
 			val pieceTaken = board.squares(dest.x)(dest.y)
+			piecesTaken = pieceTaken :: piecesTaken
 			val oldPos = piece.position
 			board.squares(dest.x)(dest.y) = piece
 			board.squares(piece.position.x)(piece.position.y) = null
 			piece.position = new Position(dest.x, dest.y)
 			if (isCheckSituation(chessModel.playerManager.currentPlayerIndex)) {
+				piecesTaken = piecesTaken.tail
 				board.squares(dest.x)(dest.y) = pieceTaken
 				board.squares(oldPos.x)(oldPos.y) = piece
 				piece.position = oldPos
@@ -105,41 +109,41 @@ class BoardManager(val chessModel: ChessModel) {
 			var action = new Action(oldPos, dest, piece)
 			history.addAction(action)
 			isCheck = isCheckSituation(chessModel.playerManager.getNextPlayer())
+			if (isCheck) {
+				if (isCheckMateSituation()) {
+					isCheckMate = true
+					chessModel.fireCheckMate()
+					return
+				}
+			}
 			chessModel.playerManager.setNextPlayer
 		}
 	}
 
 	def canMove(dest: Position, piece: Piece): Boolean = {
 		var mvtInfo = new MovementInfo(piece.position, dest, piece, board, history)
-		if (!mvtInfo.chessBoard.dimension.isInBounds(dest)
-			|| mvtInfo.src.equals(dest)) {
-			return false
+		if (isHorizontalConnected) {
+			mvtInfo = adaptMovementInfoForHorizontalBoard(mvtInfo)
+			val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+			mvtInfo.dst = dst
+			if (piece.canMove(mvtInfo)) return true
+			dst.x = dst.x - board.dimension.width
+			if (piece.canMove(mvtInfo)) return true
+			dst.x = dst.x + 2 * board.dimension.width
+			if (piece.canMove(mvtInfo)) return true
 		}
-		val pieceDst = board.squares(dest.x)(dest.y)
-		if (pieceDst == null || (pieceDst != null && piece.color != pieceDst.color)) {
-			if (isHorizontalConnected) {
-				mvtInfo = adaptMovementInfoForHorizontalBoard(mvtInfo)
-				val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
-				mvtInfo.dst = dst
-				if (piece.canMove(mvtInfo)) return true
-				dst.x = dst.x - board.dimension.width
-				if (piece.canMove(mvtInfo)) return true
-				dst.x = dst.x + 2 * board.dimension.width
-				if (piece.canMove(mvtInfo)) return true
-			} else if (isVerticalConnected) {
-				mvtInfo = adaptMovementInfoForVerticalBoard(mvtInfo)
-				val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
-				mvtInfo.dst = dst
-				if (piece.canMove(mvtInfo)) return true
-				dst.y = dst.y - board.dimension.height
-				if (piece.canMove(mvtInfo)) return true
-				dst.y = dst.y + 2 * board.dimension.height
-				if (piece.canMove(mvtInfo)) return true
-
-			} else if (piece.canMove(mvtInfo)) {
-				val i = 0
-				return true
-			}
+		if (isVerticalConnected) {
+			mvtInfo = adaptMovementInfoForVerticalBoard(mvtInfo)
+			val dst = new Position(mvtInfo.dst.x, mvtInfo.dst.y)
+			mvtInfo.dst = dst
+			if (piece.canMove(mvtInfo)) return true
+			dst.y = dst.y - board.dimension.height
+			if (piece.canMove(mvtInfo)) return true
+			dst.y = dst.y + 2 * board.dimension.height
+			if (piece.canMove(mvtInfo)) return true
+		}
+		if (piece.canMove(mvtInfo)) {
+			return true
 		}
 		return false
 	}
@@ -189,17 +193,30 @@ class BoardManager(val chessModel: ChessModel) {
 	}
 
 	def isCheckSituation(playerIndex: Int): Boolean = {
-		var res = false
+//		val attacker = chessModel.playerManager.currentPlayerIndex
+		return canCapturePiece(kingOfPlayer(playerIndex))
+	}
 
-		// le roi du joueur au trait
-		val king = kingOfPlayer(playerIndex)
+	def canCapturePiece(piece: Piece): Boolean = {
 		for (p <- pieces) {
-			if (!p.isInstanceOf[King])
-				if (canMove(king.position, p)) {
+			if (!piecesTaken.contains(p) && piece.color != p.color) {
+				if (canMove(piece.position, p)) {
 					return true
 				}
+			}
 		}
-
+		return false
+	}
+	
+	def canCapturePiece(attackerPlayer: Int, piece: Piece): Boolean = {
+		for (p <- pieces) {
+			if (!piecesTaken.contains(p) 
+					&& PlayerManager.playerColorToNumber(p.color) == attackerPlayer) {
+				if (canMove(piece.position, p)) {
+					return true
+				}
+			}
+		}
 		return false
 	}
 
@@ -213,5 +230,43 @@ class BoardManager(val chessModel: ChessModel) {
 			}
 		}
 		return res
+	}
+
+	def isCheckMateSituation(): Boolean = {
+		val defender = chessModel.playerManager.getNextPlayer
+		for (p <- pieces) {
+			val n = PlayerManager.playerColorToNumber(p.color)
+			if (n == defender) {
+				val mvtInfo = new MovementInfo(p.position, null, p, board, null)
+				val possibleMoves = p.moveBehavior.possibleMoves(mvtInfo)
+				for (i <- 0 to possibleMoves.length - 1) {
+					for (j <- 0 to possibleMoves(i).length - 1) {
+						val dest = new Position(i, j)
+						val pieceTaken = board.squares(dest.x)(dest.y)
+						val oldPos = p.position
+						if (possibleMoves(i)(j) == 1) {
+							if(pieceTaken != null)
+								piecesTaken = pieceTaken :: piecesTaken
+							board.squares(dest.x)(dest.y) = p
+							board.squares(p.position.x)(p.position.y) = null
+							p.position = new Position(dest.x, dest.y)
+							var flag = false
+							if (!isCheckSituation(defender)) {
+								flag = true
+							}
+							board.squares(dest.x)(dest.y) = pieceTaken
+							if(pieceTaken != null)
+								piecesTaken = piecesTaken.tail
+							board.squares(oldPos.x)(oldPos.y) = p
+							p.position = oldPos
+							if (flag)
+								return false
+						}
+					}
+				}
+
+			}
+		}
+		return true
 	}
 }
