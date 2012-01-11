@@ -13,6 +13,9 @@ import chess.behavior.move.HorizontalMove
 import chess.behavior.move.VerticalMove
 import chess.entity.ChessBoard
 import chess.entity.Rook
+import chess.entity.Piece
+import chess.entity.Pawn
+import chess.entity.Color._
 
 @RunWith(classOf[JUnitRunner])
 class VerticalMoveTest extends Spec with BeforeAndAfter {
@@ -22,42 +25,45 @@ class VerticalMoveTest extends Spec with BeforeAndAfter {
 	var src: Position = _
 	var dst: Position = _
 	var mvtInfo: MovementInfo = _
-
+	var piece: Piece = _
+	
 	before {
 		movement = new MoveBehavior with VerticalMove
 		chessBoard = new ChessBoard(new Dimension(8, 8))
 		src = new Position(3, 3)
+		piece = new Pawn()
+		piece.color = White
 	}
 
-	describe("HorizontalMove") {
+	describe("VerticalMove") {
 
 		it("should reject move on the same position") {
 			dst = new Position(3, 3)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 
 		it("should reject move on a square not on the same line and row") {
 			dst = new Position(5, 5)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 
 		it("should reject move on a square out of bounds") {
 			dst = new Position(10, 10)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo));
 		}
 
 		it("should accept move two squares on the top") {
 			dst = new Position(3, 5)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(movement.canMove(mvtInfo))
 		}
 
 		it("should accept move two squares on the bottom") {
 			dst = new Position(3, 1)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(movement.canMove(mvtInfo))
 		}
 		
@@ -65,13 +71,13 @@ class VerticalMoveTest extends Spec with BeforeAndAfter {
 			dst = new Position(3, 7)
 			val pieceOnTheWay = new Rook()
 			chessBoard.squares(3)(5) = pieceOnTheWay
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 
 		it("should reject move two squares on the right") {
 			dst = new Position(5, 3)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 	}

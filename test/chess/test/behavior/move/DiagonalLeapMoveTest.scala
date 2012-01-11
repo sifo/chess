@@ -9,6 +9,9 @@ import chess.behavior.move.MoveBehavior
 import chess.entity.Position
 import chess.behavior.move.DiagonalMove
 import chess.entity.Dimension
+import chess.entity.Piece
+import chess.entity.Pawn
+import chess.entity.Color._
 
 @RunWith(classOf[JUnitRunner])
 class DiagonalLeapMoveTest extends Spec with BeforeAndAfter {
@@ -18,11 +21,14 @@ class DiagonalLeapMoveTest extends Spec with BeforeAndAfter {
 	var src: Position = _
 	var dst: Position = _
 	var mvtInfo: MovementInfo = _
-
+	var piece: Piece = _
+	
 	before {
 		movement = new MoveBehavior with DiagonalMove
 		chessBoard = new ChessBoard(new Dimension(8, 8))
 		src = new Position(3, 3)
+		piece = new Pawn()
+		piece.color = White
 	}
 
 	describe("DiagonalMoveTest") {

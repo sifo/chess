@@ -12,6 +12,7 @@ import chess.entity.Position
 import chess.entity.Pawn
 import chess.history.ChessHistory
 import chess.history.Action
+import chess.entity.Color._
 
 
 @RunWith(classOf[JUnitRunner])
@@ -34,6 +35,8 @@ class SimpleMoveTest extends Spec with BeforeAndAfter {
 		src   = new Position(4, 1)
 		src_2 = new Position(4, 2)
 		src_3 = new Position(4, 4)
+		pawn = new Pawn()
+		pawn.color = White
 	}
 	
 	describe("SimpleMove") {
@@ -41,14 +44,14 @@ class SimpleMoveTest extends Spec with BeforeAndAfter {
 		it("should reject move on the same position") {
 			dst = new Position(4, 1)
 			chessHistory = new ChessHistory
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, pawn, chessBoard, chessHistory)
 			assert(!movement.canMove(mvtInfo))
 		}
 		
 		it("should reject move more than one square (outside the second column)") {
 			dst = new Position(4, 4)
 			chessHistory = new ChessHistory
-			mvtInfo = new MovementInfo(src_2, dst, null, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src_2, dst, pawn, chessBoard, chessHistory)
 			assert(!movement.canMove(mvtInfo))
 		}
 		
@@ -56,14 +59,14 @@ class SimpleMoveTest extends Spec with BeforeAndAfter {
 		it("should accept simple move") {
 			dst = new Position(4, 2)
 			chessHistory = new ChessHistory
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, pawn, chessBoard, chessHistory)
 			assert(movement.canMove(mvtInfo))
 		}
 		
 		it("should accept move more than one square (inside the second column)") {
 			dst = new Position(4, 3)
 			chessHistory = new ChessHistory
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, chessHistory)
+			mvtInfo = new MovementInfo(src, dst, pawn, chessBoard, chessHistory)
 			assert(movement.canMove(mvtInfo))
 		}
 		

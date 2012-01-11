@@ -13,6 +13,8 @@ import chess.entity.ChessBoard
 import chess.behavior.move.HorizontalLeapMove
 import chess.entity.Rook
 import chess.entity.Pawn
+import chess.entity.Piece
+import chess.entity.Color._
 
 @RunWith(classOf[JUnitRunner])
 class HorizontalLeapMoveTest extends Spec with BeforeAndAfter {
@@ -22,56 +24,59 @@ class HorizontalLeapMoveTest extends Spec with BeforeAndAfter {
 	var src: Position = _
 	var dst: Position = _
 	var mvtInfo: MovementInfo = _
-
+	var piece: Piece = _
+	
 	before {
 		movement = new MoveBehavior with HorizontalLeapMove
 		chessBoard = new ChessBoard(new Dimension(8, 8))
 		chessBoard.squares(6)(3) = new Pawn()
 		chessBoard.squares(2)(3) = new Pawn()
 		src = new Position(3, 3)
+		piece = new Pawn()
+		piece.color = White
 	}
 
 	describe("HorizontalLeapMove") {
 
 		it("should reject move on the same position") {
 			dst = new Position(3, 3)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 
 		it("should reject move on a square not on the same line and row") {
 			dst = new Position(5, 5)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 
 		it("should reject move on a square out of bounds") {
 			dst = new Position(10, 10)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo));
 		}
 
 		it("should accept move four squares on the right after leaping") {
 			dst = new Position(7, 3)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(movement.canMove(mvtInfo))
 		}
 
 		it("should accept move two squares on the left after leaping") {
 			dst = new Position(1, 3)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(movement.canMove(mvtInfo))
 		}
 
 		it("should reject if there is no piece on the way") {
 			dst = new Position(5, 3)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 
 		it("should reject move two squares on the top") {
 			dst = new Position(3, 5)
-			mvtInfo = new MovementInfo(src, dst, null, chessBoard, null)
+			mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 			assert(!movement.canMove(mvtInfo))
 		}
 	}

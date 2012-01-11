@@ -57,7 +57,7 @@ class BoardHorizontalConnectedTest extends Spec with BeforeAndAfter {
 	
 	describe("BoardManagerHorizontalConnected") {
 
-		it("should accept bishop move horizontaly") {
+		it("should accept bishop move") {
 			assert(boardManager.canMove(new Position(1, 1), bishop))
 			assert(boardManager.canMove(new Position(0, 2), bishop))
 			
@@ -76,13 +76,13 @@ class BoardHorizontalConnectedTest extends Spec with BeforeAndAfter {
 			assert(boardManager.canMove(new Position(1, 7), bishop))
 		}
 
-		it("should accept knight move classic move") {
-			assert(boardManager.canMove(new Position(5, 0), knight))
-			assert(boardManager.canMove(new Position(5, 2), knight))
-			assert(boardManager.canMove(new Position(6, 3), knight))
-			assert(boardManager.canMove(new Position(0, 3), knight))
-			assert(boardManager.canMove(new Position(1, 0), knight))
-			assert(boardManager.canMove(new Position(1, 2), knight))
-		}
+//		it("should accept knight move classic move") {
+//			assert(boardManager.canMove(new Position(5, 0), knight))
+//			assert(boardManager.canMove(new Position(5, 2), knight))
+//			assert(boardManager.canMove(new Position(6, 3), knight))
+//			assert(boardManager.canMove(new Position(0, 3), knight))
+//			assert(boardManager.canMove(new Position(1, 0), knight))
+//			assert(boardManager.canMove(new Position(1, 2), knight))
+//		}
 	}
 }
