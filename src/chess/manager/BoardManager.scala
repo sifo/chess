@@ -89,42 +89,53 @@ class BoardManager(val chessModel: ChessModel) {
 	}
 
 	def move(dest: Position, piece: Piece) {
-		if (canMove(dest, piece) && chessModel.playerManager.isPlayerTurn(piece)) {
-			val pieceTaken = board.squares(dest.x)(dest.y)
-			piecesTaken = pieceTaken :: piecesTaken
-			val oldPos = piece.position
-			board.squares(dest.x)(dest.y) = piece
-			board.squares(piece.position.x)(piece.position.y) = null
-			piece.position = new Position(dest.x, dest.y)
-			if (isCheckSituation(chessModel.playerManager.currentPlayerIndex)) {
-				piecesTaken = piecesTaken.tail
-				board.squares(dest.x)(dest.y) = pieceTaken
-				board.squares(oldPos.x)(oldPos.y) = piece
-				piece.position = oldPos
-				chessModel.fireImpossibleMovement()
-				return
-			}
-			isCheck = false
-			if (pieceTaken != null) {
-				piecesTaken = pieceTaken :: piecesTaken
-			}
-			var action = new Action(oldPos, dest, piece)
-			history.addAction(action)
-			isCheck = isCheckSituation(chessModel.playerManager.getNextPlayer())
-			if (isCheck) {
-				if (isCheckMateSituation()) {
-					isCheckMate = true
-					chessModel.fireCheckMate()
-					return
-				}
-			}
-			else if (isPatSituation) {
-				isPat = true
-				chessModel.firePat()
-				return
-			}
-			chessModel.playerManager.setNextPlayer
+		if (!chessModel.playerManager.isPlayerTurn(piece)) {
+			chessModel.fireNotPlayerTurn()
+			return
 		}
+		if (!canMove(dest, piece)) {
+			chessModel.fireImpossibleMovement()
+			return
+		}
+		
+		val pieceTaken = board.squares(dest.x)(dest.y)
+		piecesTaken = pieceTaken :: piecesTaken
+		val oldPos = piece.position
+		board.squares(dest.x)(dest.y) = piece
+		board.squares(piece.position.x)(piece.position.y) = null
+		piece.position = new Position(dest.x, dest.y)
+		if (isCheckSituation(chessModel.playerManager.currentPlayerIndex)) {
+			piecesTaken = piecesTaken.tail
+			board.squares(dest.x)(dest.y) = pieceTaken
+			board.squares(oldPos.x)(oldPos.y) = piece
+			piece.position = oldPos
+			chessModel.firePlayerCantPutHimselfInCheck()
+			return
+		}
+		isCheck = false
+		if (pieceTaken != null) {
+			piecesTaken = pieceTaken :: piecesTaken
+		}
+		var action = new Action(oldPos, dest, piece)
+		history.addAction(action)
+		chessModel.fireBoard()
+		isCheck = isCheckSituation(chessModel.playerManager.getNextPlayer())
+		if (isCheck) {
+			if (isCheckMateSituation()) {
+				isCheckMate = true
+				chessModel.fireCheckMate()
+				chessModel.fireClose()
+				return
+			} else {
+				chessModel.fireCheck()
+			}
+		} else if (isPatSituation) {
+			isPat = true
+			chessModel.firePat()
+			chessModel.fireClose()
+			return
+		}
+		chessModel.playerManager.setNextPlayer
 	}
 
 	def canMove(dest: Position, piece: Piece): Boolean = {
@@ -244,7 +255,7 @@ class BoardManager(val chessModel: ChessModel) {
 		for (p <- pieces) {
 			val n = PlayerManager.playerColorToNumber(p.color)
 			if (n == defender) {
-				val mvtInfo = new MovementInfo(p.position, null, p, board, null)
+				val mvtInfo = new MovementInfo(p.position, null, p, board, history)
 				val possibleMoves = p.moveBehavior.possibleMoves(mvtInfo)
 				for (i <- 0 to possibleMoves.length - 1) {
 					for (j <- 0 to possibleMoves(i).length - 1) {
@@ -280,6 +291,5 @@ class BoardManager(val chessModel: ChessModel) {
 	def isPatSituation(): Boolean = {
 		return isCheckMateSituation
 	}
-
 
 }
