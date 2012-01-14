@@ -4,7 +4,7 @@ import chess.entity.Rook
 import chess.entity.Color._
 
 class ChessHistory extends History {
-  private var listeActions = List[Action]()
+  var listeActions = List[Action]()
   
   private var kingWhiteInit  = true
   private var rookLWhiteInit = true
