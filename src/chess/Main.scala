@@ -8,7 +8,6 @@ object Main {
 		var config = if(!args.isEmpty) args(0) else DEFAULT_CONFIG
 		val chessModel = new ChessModel(config)
 		val chessController = new ChessController(chessModel)
-		chessController.displayViews()
 		chessModel.start()
 	}
 }
