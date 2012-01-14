@@ -1,4 +1,4 @@
-package chess.test
+package chess.test.behavior.promote
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.Spec

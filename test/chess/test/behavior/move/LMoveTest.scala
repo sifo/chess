@@ -1,4 +1,5 @@
-package chess.test
+package chess.test.behavior.move
+
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.Spec

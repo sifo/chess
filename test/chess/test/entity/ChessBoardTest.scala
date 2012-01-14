@@ -1,4 +1,4 @@
-package chess.test
+package chess.test.entity
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.Spec
