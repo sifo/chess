@@ -1,4 +1,4 @@
-package chess.test
+package chess.test.behavior.move
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.Spec
@@ -31,7 +31,7 @@ class DiagonalLeapMoveTest extends Spec with BeforeAndAfter {
 		piece.color = White
 	}
 
-	describe("DiagonalMoveTest") {
+	describe("DiagonalLeapMoveTest") {
 
 		it("should reject move on the same position") {
 			assert(true)

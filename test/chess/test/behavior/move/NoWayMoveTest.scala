@@ -1,4 +1,4 @@
-package chess.test
+package chess.test.behavior.move
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.Spec
@@ -28,14 +28,16 @@ class NoWayMoveTest extends Spec with BeforeAndAfter {
 		movement = new MoveBehavior with NoWayMove
 		chessBoard = new ChessBoard(new Dimension(8, 8))
 		src = new Position(4, 0)
+		dst = new Position(4, 1)
 		piece = new Pawn()
 		piece.color = White
+		mvtInfo = new MovementInfo(src, dst, piece, chessBoard, null)
 	}
 	
 	describe("NoWayMoveTest") {
 		
 		it("should always refuse") {
-			assert(true)
+			assert(!movement.canMove(mvtInfo))
 		}
 		
 	}
