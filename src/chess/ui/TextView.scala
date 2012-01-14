@@ -4,110 +4,131 @@ import chess.ChessListener
 import chess.ChessView
 import chess.ChessController
 import chess.ui.events.MoveEvent
-import chess.ui.events.TellCantMovePieceEvent
 import chess.ui.events.PlacePieceOnBoardEvent
 import chess.ui.events.DrawBoardEvent
 import chess.entity._
 import java.util.regex.Pattern
 import chess.ui.events.MoveEvent
+import chess.entity.Color._
+import chess.ui.events.CantMovePieceEvent
+import chess.ui.events.CantPutYourselfInCheckEvent
+import chess.ui.events.CheckEvent
+import chess.ui.events.CheckMateEvent
+import chess.ui.events.PatEvent
+import chess.ui.events.NotPlayerTurnEvent
+import chess.ui.events.NoPieceAtPositionEvent
+
+object TextView {
+	val NOT_PLAYER_TURN = "Ce n'est pas le tour de ce joueur."
+	val CANT_MOVE_PIECE = "Impossible de déplacer cette pièce."
+	val CANT_GO_IN_CHECK = "Vous ne pouvez pas vous mettre en situation d'échec."
+	val OUPUT_INDICATOR = "< "
+	val PROMPT = "> "
+	val CHECK = "Echec du roi!"
+	val CHECK_MATE = "Echec et mat!"
+	val PAT = "Pat!"
+	val NO_PIECE_AT_POSITION = "Aucune pièce à cette position."
+}
 
 class TextView(chessController: ChessController) extends ChessView(chessController) {
-  var outputIndicator = ">";
-  var inputIndicator = "<";
-  var localBoard: Array[Array[String]] = null;
+  var localBoard: Array[Array[String]] = null
+  var writer = new TextViewWriter(chessController)
+  writer.start()
 
   def display() {
-    for (i <- 0 until localBoard.length) {
-      for (j <- 0 until localBoard(i).length) {
-        print(localBoard(i)(j));
+  	var ok = true
+    for (j <- localBoard(0).length - 1 to 0 by -1) {
+      print(j + "  ")
+      for (i <- 0 until localBoard.length) {
+        print(localBoard(i)(j) + " ")
       }
-      println("");
+      println("")
     }
+    println("")
+    print("   ")
     for (i <- 0 until localBoard.length) {
-      print("--");
+      print(i + " ")
     }
-    println("");
+    println("\n")
   }
 
   def close() {
-    exit(0);
-  }
-
-  def drawBoard(event: MoveEvent): Unit = {
-    localBoard(event.dst.x)(event.dst.y) = localBoard(event.src.x)(event.src.y);
-
-    if (event.src.x % 2 == 0) {
-      if (event.src.y % 2 == 0)
-        localBoard(event.src.x)(event.src.y) = "@ ";
-      else
-        localBoard(event.src.x)(event.src.y) = "Ø ";
-    } else {
-      if (event.src.y % 2 == 0)
-        localBoard(event.src.x)(event.src.y) = "Ø ";
-      else
-        localBoard(event.src.x)(event.src.y) = "@ ";
-    }
-
-    // display();
+    writer.stop() 
   }
 
   def drawBoard(event: DrawBoardEvent): Unit = {
-    localBoard = Array.fill[String](event.dimension.height, event.dimension.width)("");
+  	val dim = event.chessBoard.dimension
+  	val squares = event.chessBoard.squares
+    localBoard = Array.fill[String](dim.width, dim.height)("");
 
-    for (i <- 0 until event.dimension.height) {
-      for (j <- 0 until event.dimension.width) {
-        if (localBoard(i)(j) == "") {
-          if (i % 2 == 0) {
-            if (j % 2 == 0)
-              localBoard(i)(j) = "@ ";
-            else
-              localBoard(i)(j) = "Ø ";
-          } else {
-            if (j % 2 == 0)
-              localBoard(i)(j) = "Ø ";
-            else
-              localBoard(i)(j) = "@ ";
-          }
-        }
+    for (i <- 0 until dim.height) {
+      for (j <- 0 until dim.width) {
+      	val piece = squares(i)(j)
+      	if (piece != null)
+      		if(piece.color == White)
+      		  localBoard(i)(j) = pieceToSymbol(piece).toUpperCase
+      		else 
+      		  localBoard(i)(j) = pieceToSymbol(piece)
+      	else
+      	  localBoard(i)(j) = "."
       }
     }
-
-    //display();
+    println()
+    display()
+    print(TextView.PROMPT)
   }
 
-  def tellCantMovePiece(event: TellCantMovePieceEvent): Unit = {
+  def cantMovePiece(event: CantMovePieceEvent): Unit = {
     display();
-    println(outputIndicator + outputIndicator + event.msg);
+    println(TextView.OUPUT_INDICATOR + TextView.CANT_MOVE_PIECE)
+    print(TextView.PROMPT)
+  }
+  
+  def notPlayerTurn(event: NotPlayerTurnEvent): Unit = {
+    display()
+    println(TextView.OUPUT_INDICATOR + TextView.NOT_PLAYER_TURN)
+    print(TextView.PROMPT)
+  }
+  
+  def cantPutYourselfInCheck(event: CantPutYourselfInCheckEvent): Unit = {
+    display()
+    println(TextView.OUPUT_INDICATOR + TextView.CANT_GO_IN_CHECK)
+    print(TextView.PROMPT)
+  }
+  
+  def check(event: CheckEvent): Unit = {
+    display()
+    println(TextView.OUPUT_INDICATOR + TextView.CHECK)
+    print(TextView.PROMPT)
+  }
+  
+  def checkmate(event: CheckMateEvent): Unit = {
+    display()
+    println(TextView.OUPUT_INDICATOR + TextView.CHECK_MATE)
+    print(TextView.PROMPT)
+  }
+  
+  def pat(event: PatEvent): Unit = {
+    display()
+    println(TextView.OUPUT_INDICATOR + TextView.PAT)
+    print(TextView.PROMPT)
+  }
+  
+  def noPieceAtPosition(event: NoPieceAtPositionEvent): Unit = {
+    display()
+    println(TextView.OUPUT_INDICATOR + TextView.NO_PIECE_AT_POSITION)
+    print(TextView.PROMPT)
   }
 
-  def placePieceOnTile(event: PlacePieceOnBoardEvent): Unit = {
-
-    localBoard(event.position.x)(event.position.y) = {
-      if (event.actualPiece.color == Color.Black) {
-        //Ceci est à corriger selon l'implémentation de Color
-        //pour différencier sur l'affichage les pièces noires et blanches
-        event.actualPiece.significantLetter().toUpperCase();
-      } else {
-        event.actualPiece.significantLetter().toLowerCase();
-      }
-    }
-  }
-
-  def processUserInput(input: String): MoveEvent = {
-    var pattern = Pattern.compile("([A-Z]|[a-z])(\\d)([A-Z]|[a-z])(\\d)").matcher(input);
-    if (pattern.matches()) {
-      new MoveEvent(
-        new Position(
-          pattern.group(1).toUpperCase().charAt(0).toInt - 65,
-          pattern.group(2).toInt - 1),
-        new Position(
-          pattern.group(3).toUpperCase().charAt(0).toInt - 65,
-          pattern.group(4).toInt - 1));
-    } else {
-      if ("exit".equals(input)) {
-        close();
-      }
-      null;
-    }
+  def pieceToSymbol(piece : Piece): String = {
+  	piece match {
+  		case _:Bishop => return "b"
+  		case _:Pawn => return "p"
+  		case _:Knight => return "n"
+  		case _:Rook => return "r"
+  		case _:Queen => return "q"
+  		case _:King => return "k"
+  		case whatever => return "?"
+  	}
   }
 }
