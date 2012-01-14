@@ -1,0 +1,27 @@
+***********!
+*** POCA ***
+************
+
+Compilation :
+	
+	On utilise 'ant' avec la commande :
+	
+	$ ant 
+	
+Pour l'exécution :
+
+	$ java -classpath ./lib/*:bin/classes/ chess.Main
+	
+	ou
+	
+	$ ant execute
+	
+Pour les tests :
+
+	$ ant test
+	
+Commandes de jeu :
+
+'2123' ou '2 1 2 3' pour déplacer la pièce en (2, 1) à (2, 3)
+
+'exit' pour quitter le jeu
