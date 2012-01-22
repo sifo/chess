@@ -128,6 +128,10 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
   		case _:Rook => return "r"
   		case _:Queen => return "q"
   		case _:King => return "k"
+  		case _:Empress => return "e"
+  		case _:Grasshopper => return "g"
+  		case _:Nightrider => return "d"
+  		case _:Princess => return "s"
   		case whatever => return "?"
   	}
   }
