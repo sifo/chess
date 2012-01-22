@@ -38,7 +38,7 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
   def display() {
   	var ok = true
     for (j <- localBoard(0).length - 1 to 0 by -1) {
-      print(j + "  ")
+      print(j % 10 + "  ")
       for (i <- 0 until localBoard.length) {
         print(localBoard(i)(j) + " ")
       }
@@ -47,7 +47,7 @@ class TextView(chessController: ChessController) extends ChessView(chessControll
     println("")
     print("   ")
     for (i <- 0 until localBoard.length) {
-      print(i + " ")
+      print(i % 10 + " ")
     }
     println("\n")
   }
