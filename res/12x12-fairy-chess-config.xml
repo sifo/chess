@@ -34,30 +34,30 @@
 		<piece-setup x='9' y='1' player='0' piece='pawn' />
 		<piece-setup x='10' y='1' player='0' piece='pawn' />
 		<piece-setup x='11' y='1' player='0' piece='pawn' />
-		<piece-setup x='0' y='7' player='1' piece='rook' />
-		<piece-setup x='1' y='7' player='1' piece='empress' />
-		<piece-setup x='2' y='7' player='1' piece='knight' />
-		<piece-setup x='3' y='7' player='1' piece='nightrider' />
-		<piece-setup x='4' y='7' player='1' piece='bishop' />
-		<piece-setup x='5' y='7' player='1' piece='queen' />
-		<piece-setup x='6' y='7' player='1' piece='king' />
-		<piece-setup x='7' y='7' player='1' piece='bishop' />
-		<piece-setup x='8' y='7' player='1' piece='grasshopper' />
-		<piece-setup x='9' y='7' player='1' piece='knight' />
-		<piece-setup x='10' y='7' player='1' piece='princess' />
-		<piece-setup x='11' y='7' player='1' piece='rook' />
-		<piece-setup x='0' y='6' player='1' piece='pawn' />
-		<piece-setup x='1' y='6' player='1' piece='pawn' />
-		<piece-setup x='2' y='6' player='1' piece='pawn' />
-		<piece-setup x='3' y='6' player='1' piece='pawn' />
-		<piece-setup x='4' y='6' player='1' piece='pawn' />
-		<piece-setup x='5' y='6' player='1' piece='pawn' />
-		<piece-setup x='6' y='6' player='1' piece='pawn' />
-		<piece-setup x='7' y='6' player='1' piece='pawn' />
-		<piece-setup x='8' y='6' player='1' piece='pawn' />
-		<piece-setup x='9' y='6' player='1' piece='pawn' />
-		<piece-setup x='10' y='6' player='1' piece='pawn' />
-		<piece-setup x='11' y='6' player='1' piece='pawn' />
+		<piece-setup x='0' y='11' player='1' piece='rook' />
+		<piece-setup x='1' y='11' player='1' piece='empress' />
+		<piece-setup x='2' y='11' player='1' piece='knight' />
+		<piece-setup x='3' y='11' player='1' piece='nightrider' />
+		<piece-setup x='4' y='11' player='1' piece='bishop' />
+		<piece-setup x='5' y='11' player='1' piece='queen' />
+		<piece-setup x='6' y='11' player='1' piece='king' />
+		<piece-setup x='7' y='11' player='1' piece='bishop' />
+		<piece-setup x='8' y='11' player='1' piece='grasshopper' />
+		<piece-setup x='9' y='11' player='1' piece='knight' />
+		<piece-setup x='10' y='11' player='1' piece='princess' />
+		<piece-setup x='11' y='11' player='1' piece='rook' />
+		<piece-setup x='0' y='10' player='1' piece='pawn' />
+		<piece-setup x='1' y='10' player='1' piece='pawn' />
+		<piece-setup x='2' y='10' player='1' piece='pawn' />
+		<piece-setup x='3' y='10' player='1' piece='pawn' />
+		<piece-setup x='4' y='10' player='1' piece='pawn' />
+		<piece-setup x='5' y='10' player='1' piece='pawn' />
+		<piece-setup x='6' y='10' player='1' piece='pawn' />
+		<piece-setup x='7' y='10' player='1' piece='pawn' />
+		<piece-setup x='8' y='10' player='1' piece='pawn' />
+		<piece-setup x='9' y='10' player='1' piece='pawn' />
+		<piece-setup x='10' y='10' player='1' piece='pawn' />
+		<piece-setup x='11' y='10' player='1' piece='pawn' />
 	</board-pieces>
 	<board-obstacles>
 <!-- 		<position x='3' y='3' /> -->
